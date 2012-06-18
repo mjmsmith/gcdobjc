@@ -8,11 +8,11 @@
 #import <Foundation/Foundation.h>
 #import <dispatch/dispatch.h>
 
-@interface GCDGroup : NSObject
+#import "GCDObject.h"
 
-@property (unsafe_unretained, nonatomic, readonly) dispatch_group_t dispatchGroup;
+@interface GCDGroup : GCDObject
 
-- (id)init;
+@property (unsafe_unretained, readonly, nonatomic) dispatch_group_t dispatchGroup;
 
 - (void)enter;
 - (void)leave;

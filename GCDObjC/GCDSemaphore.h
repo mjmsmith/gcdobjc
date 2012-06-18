@@ -8,9 +8,11 @@
 #import <Foundation/Foundation.h>
 #import <dispatch/dispatch.h>
 
-@interface GCDSemaphore : NSObject
+#import "GCDObject.h"
 
-@property (unsafe_unretained, nonatomic, readonly) dispatch_semaphore_t dispatchSemaphore;
+@interface GCDSemaphore : GCDObject
+
+@property (unsafe_unretained, readonly, nonatomic) dispatch_semaphore_t dispatchSemaphore;
 
 - initWithValue:(long)value;
 

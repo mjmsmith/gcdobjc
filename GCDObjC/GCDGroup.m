@@ -9,21 +9,14 @@
 
 @implementation GCDGroup
 
-@synthesize dispatchGroup = _dispatchGroup;
-
 #pragma mark Construction.
 
 - (id)init {
-  if ((self = [super init]) != nil) {
-    _dispatchGroup = dispatch_group_create();
-  }
-  
-  return self;
+  return [super initWithDispatchObject:dispatch_group_create()];
 }
 
 - (void)dealloc {
-  dispatch_release(_dispatchGroup);
-  _dispatchGroup = NULL;
+  dispatch_release(self.dispatchGroup);
 }
 
 #pragma mark Public methods.
@@ -39,5 +32,11 @@
 - (long)wait:(dispatch_time_t)timeout {
   return dispatch_group_wait(self.dispatchGroup, timeout);
 }
+
+- (dispatch_group_t)dispatchGroup {
+  return self.dispatchObject._dg;
+}
+
+
 
 @end

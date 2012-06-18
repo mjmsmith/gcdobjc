@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D06C169158EB2F800CBC711 /* GCDObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D06C167158EB2F800CBC711 /* GCDObject.h */; };
+		4D06C16A158EB2F800CBC711 /* GCDObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D06C168158EB2F800CBC711 /* GCDObject.m */; };
+		4D06C16B158EB2F800CBC711 /* GCDObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D06C168158EB2F800CBC711 /* GCDObject.m */; };
+		4D06C16E158EB92300CBC711 /* GCDObjC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D06C16D158EB92200CBC711 /* GCDObjC.h */; };
+		4D06C171158EC0C800CBC711 /* GCDSingleton.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D06C16F158EC0C800CBC711 /* GCDSingleton.h */; };
+		4D06C172158EC0C800CBC711 /* GCDSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D06C170158EC0C800CBC711 /* GCDSingleton.m */; };
+		4D06C173158EC0C800CBC711 /* GCDSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D06C170158EC0C800CBC711 /* GCDSingleton.m */; };
 		4D6F601C158414F70023150C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6F601B158414F70023150C /* Foundation.framework */; };
 		4D6F602A158414F70023150C /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6F6029158414F70023150C /* SenTestingKit.framework */; };
 		4D6F602D158414F70023150C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6F601B158414F70023150C /* Foundation.framework */; };
@@ -33,6 +40,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4D06C167158EB2F800CBC711 /* GCDObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDObject.h; sourceTree = "<group>"; };
+		4D06C168158EB2F800CBC711 /* GCDObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDObject.m; sourceTree = "<group>"; };
+		4D06C16D158EB92200CBC711 /* GCDObjC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDObjC.h; sourceTree = "<group>"; };
+		4D06C16F158EC0C800CBC711 /* GCDSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDSingleton.h; sourceTree = "<group>"; };
+		4D06C170158EC0C800CBC711 /* GCDSingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDSingleton.m; sourceTree = "<group>"; };
 		4D6F6018158414F70023150C /* libGCDObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGCDObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D6F601B158414F70023150C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4D6F6028158414F70023150C /* GCDObjCTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GCDObjCTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,8 +114,13 @@
 		4D6F601D158414F70023150C /* GCDObjC */ = {
 			isa = PBXGroup;
 			children = (
+				4D06C16D158EB92200CBC711 /* GCDObjC.h */,
 				4D6F60421584152C0023150C /* GCDQueue.h */,
 				4D6F60431584152C0023150C /* GCDQueue.m */,
+				4D06C16F158EC0C800CBC711 /* GCDSingleton.h */,
+				4D06C170158EC0C800CBC711 /* GCDSingleton.m */,
+				4D06C167158EB2F800CBC711 /* GCDObject.h */,
+				4D06C168158EB2F800CBC711 /* GCDObject.m */,
 				4D930E68158D728B009538FB /* GCDSemaphore.h */,
 				4D930E69158D728B009538FB /* GCDSemaphore.m */,
 				4D930E63158D71F7009538FB /* GCDGroup.h */,
@@ -141,6 +158,9 @@
 				4D6F60441584152C0023150C /* GCDQueue.h in Headers */,
 				4D930E65158D71F7009538FB /* GCDGroup.h in Headers */,
 				4D930E6A158D728B009538FB /* GCDSemaphore.h in Headers */,
+				4D06C169158EB2F800CBC711 /* GCDObject.h in Headers */,
+				4D06C16E158EB92300CBC711 /* GCDObjC.h in Headers */,
+				4D06C171158EC0C800CBC711 /* GCDSingleton.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +264,8 @@
 				4D6F60451584152C0023150C /* GCDQueue.m in Sources */,
 				4D930E66158D71F7009538FB /* GCDGroup.m in Sources */,
 				4D930E6B158D728B009538FB /* GCDSemaphore.m in Sources */,
+				4D06C16A158EB2F800CBC711 /* GCDObject.m in Sources */,
+				4D06C172158EC0C800CBC711 /* GCDSingleton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,6 +275,8 @@
 			files = (
 				4D6F6039158414F70023150C /* GCDObjCTests.m in Sources */,
 				4D6F60461584152C0023150C /* GCDQueue.m in Sources */,
+				4D06C16B158EB2F800CBC711 /* GCDObject.m in Sources */,
+				4D06C173158EC0C800CBC711 /* GCDSingleton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
