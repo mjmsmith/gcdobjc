@@ -100,7 +100,7 @@ static GCDQueue *backgroundPriorityGlobalQueue;
   dispatch_group_async(group.dispatchGroup, self.dispatchQueue, block);
 }
 
-- (void)asyncBlock:(dispatch_block_t)block afterSeconds:(double)seconds {
+- (void)asyncBlock:(dispatch_block_t)block afterDelay:(double)seconds {
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC)), self.dispatchQueue, block);
 }
 
@@ -147,7 +147,7 @@ static GCDQueue *backgroundPriorityGlobalQueue;
   dispatch_group_async_f(group.dispatchGroup, self.dispatchQueue, context, function);
 }
 
-- (void)asyncFunction:(dispatch_function_t)function withContext:(void *)context afterSeconds:(double)seconds {
+- (void)asyncFunction:(dispatch_function_t)function withContext:(void *)context afterDelay:(double)seconds {
   dispatch_after_f(dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC)), self.dispatchQueue, context, function);
 }
 

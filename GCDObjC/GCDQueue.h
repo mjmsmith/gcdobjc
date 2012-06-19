@@ -31,7 +31,7 @@
 
 - (void)asyncBlock:(dispatch_block_t)block;
 - (void)asyncBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group;
-- (void)asyncBlock:(dispatch_block_t)block afterSeconds:(double)seconds;
+- (void)asyncBlock:(dispatch_block_t)block afterDelay:(double)seconds;
 
 - (void)asyncBarrierBlock:(dispatch_block_t)block;
 - (void)asyncNotifyBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group;
@@ -43,7 +43,7 @@
 
 - (void)asyncFunction:(dispatch_function_t)function withContext:(void *)context;
 - (void)asyncFunction:(dispatch_function_t)function withContext:(void *)context inGroup:(GCDGroup *)group;
-- (void)asyncFunction:(dispatch_function_t)function withContext:(void *)context afterSeconds:(double)seconds;
+- (void)asyncFunction:(dispatch_function_t)function withContext:(void *)context afterDelay:(double)seconds;
 
 - (void)asyncBarrierFunction:(dispatch_function_t)function withContext:(void *)context;
 - (void)asyncNotifyFunction:(dispatch_function_t)function withContext:(void *)context inGroup:(GCDGroup *)group;

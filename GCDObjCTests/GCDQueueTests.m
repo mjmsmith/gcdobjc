@@ -53,7 +53,7 @@
   STAssertEquals(val, 1, nil);
 }
 
-- (void)testAsyncBlockAfterSeconds {
+- (void)testAsyncBlockAfterDelay {
   GCDSemaphore *semaphore = [[GCDSemaphore alloc] init];
   GCDQueue *queue = [[GCDQueue alloc] init];
   __block int val = 0;
@@ -61,20 +61,30 @@
   [queue asyncBlock:^{
     ++val; 
     [semaphore signal];
-  } afterSeconds:0.5];
+  } afterDelay:0.5];
   
   STAssertEquals(val, 0, nil);
   [semaphore wait];
   STAssertEquals(val, 1, nil);
 }
 
+- (void)testAsyncBlockInGroup {
+  GCDQueue *queue = [[GCDQueue alloc] init];
+  GCDGroup *group = [[GCDGroup alloc] init];
+  __block int val = 0;
+  
+  [queue asyncBlock:^{ ++val; } inGroup:group];
+  [queue asyncBlock:^{ ++val; } inGroup:group];
+  
+  [group wait];
+  STAssertEquals(val, 2, nil);
+}
+
 - (void)testSyncBlock {
   GCDQueue *queue = [[GCDQueue alloc] init];
   __block int val = 0;
   
-  [queue syncBlock:^{
-    ++val; 
-  }];
+  [queue syncBlock:^{ ++val; }];
     
   STAssertEquals(val, 1, nil);
 }
@@ -83,9 +93,7 @@
   GCDQueue *queue = [GCDQueue mainQueue];
   __block int val = 0;
   
-  [queue syncBlock:^{
-    ++val; 
-  }];
+  [queue syncBlock:^{ ++val; }];
   
   STAssertTrue([queue isCurrentQueue], nil);
   STAssertEquals(val, 1, nil);
