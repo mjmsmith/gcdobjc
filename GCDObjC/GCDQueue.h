@@ -29,29 +29,29 @@
 - (id)initConcurrentWithLabel:(NSString *)label;
 - (id)initWithLabel:(NSString *)label attr:(dispatch_queue_attr_t)attr;
 
-- (void)dispatchBlock:(dispatch_block_t)block;
-- (void)dispatchBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group;
-- (void)dispatchBlock:(dispatch_block_t)block afterSeconds:(double)seconds;
+- (void)asyncBlock:(dispatch_block_t)block;
+- (void)asyncBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group;
+- (void)asyncBlock:(dispatch_block_t)block afterSeconds:(double)seconds;
 
-- (void)dispatchBarrierBlock:(dispatch_block_t)block;
-- (void)dispatchNotifyBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group;
+- (void)asyncBarrierBlock:(dispatch_block_t)block;
+- (void)asyncNotifyBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group;
 
-- (void)dispatchSyncBlock:(dispatch_block_t)block;
-- (void)dispatchSyncBlock:(void (^)(size_t))block count:(size_t)count;
+- (void)syncBlock:(dispatch_block_t)block;
+- (void)syncBlock:(void (^)(size_t))block count:(size_t)count;
 
-- (void)dispatchSyncBarrierBlock:(dispatch_block_t)block;
+- (void)syncBarrierBlock:(dispatch_block_t)block;
 
-- (void)dispatchFunction:(dispatch_function_t)function withContext:(void *)context;
-- (void)dispatchFunction:(dispatch_function_t)function withContext:(void *)context inGroup:(GCDGroup *)group;
-- (void)dispatchFunction:(dispatch_function_t)function withContext:(void *)context afterSeconds:(double)seconds;
+- (void)asyncFunction:(dispatch_function_t)function withContext:(void *)context;
+- (void)asyncFunction:(dispatch_function_t)function withContext:(void *)context inGroup:(GCDGroup *)group;
+- (void)asyncFunction:(dispatch_function_t)function withContext:(void *)context afterSeconds:(double)seconds;
 
-- (void)dispatchBarrierFunction:(dispatch_function_t)function withContext:(void *)context;
-- (void)dispatchNotifyFunction:(dispatch_function_t)function withContext:(void *)context inGroup:(GCDGroup *)group;
+- (void)asyncBarrierFunction:(dispatch_function_t)function withContext:(void *)context;
+- (void)asyncNotifyFunction:(dispatch_function_t)function withContext:(void *)context inGroup:(GCDGroup *)group;
 
-- (void)dispatchSyncFunction:(dispatch_function_t)function withContext:(void *)context;
-- (void)dispatchSyncFunction:(void (*)(void *, size_t))function withContext:(void *)context count:(size_t)count;
+- (void)syncFunction:(dispatch_function_t)function withContext:(void *)context;
+- (void)syncFunction:(void (*)(void *, size_t))function withContext:(void *)context count:(size_t)count;
 
-- (void)dispatchSyncBarrierFunction:(dispatch_function_t)function withContext:(void *)context;
+- (void)syncBarrierFunction:(dispatch_function_t)function withContext:(void *)context;
 
 - (BOOL)isCurrentQueue;
 

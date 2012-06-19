@@ -38,12 +38,12 @@
   STAssertEquals([GCDQueue currentQueue].dispatchQueue, dispatch_get_current_queue(), nil);
 }
 
-- (void)testDispatchBlock {
+- (void)testAsyncBlock {
   GCDSemaphore *semaphore = [[GCDSemaphore alloc] init];
   GCDQueue *queue = [[GCDQueue alloc] init];
   __block int val = 0;
   
-  [queue dispatchBlock:^{
+  [queue asyncBlock:^{
     ++val;
     [semaphore signal];
   }];
@@ -53,12 +53,12 @@
   STAssertEquals(val, 1, nil);
 }
 
-- (void)testDispatchBlockAfterSeconds {
+- (void)testAsyncBlockAfterSeconds {
   GCDSemaphore *semaphore = [[GCDSemaphore alloc] init];
   GCDQueue *queue = [[GCDQueue alloc] init];
   __block int val = 0;
   
-  [queue dispatchBlock:^{
+  [queue asyncBlock:^{
     ++val; 
     [semaphore signal];
   } afterSeconds:0.5];
@@ -68,22 +68,22 @@
   STAssertEquals(val, 1, nil);
 }
 
-- (void)testDispatchSyncBlock {
+- (void)testSyncBlock {
   GCDQueue *queue = [[GCDQueue alloc] init];
   __block int val = 0;
   
-  [queue dispatchSyncBlock:^{
+  [queue syncBlock:^{
     ++val; 
   }];
     
   STAssertEquals(val, 1, nil);
 }
 
-- (void)testDispatchSyncBlockOnCurrentQueue {
+- (void)testSyncBlockOnCurrentQueue {
   GCDQueue *queue = [GCDQueue mainQueue];
   __block int val = 0;
   
-  [queue dispatchSyncBlock:^{
+  [queue syncBlock:^{
     ++val; 
   }];
   
@@ -95,12 +95,22 @@ void dispatchFunction(void *context) {
   ++(*(int *)context);
 }
 
-- (void)testDispatchSyncFunction {
+- (void)testSyncFunction {
   GCDQueue *queue = [[GCDQueue alloc] init];
   __block int val = 0;
   
-  [queue dispatchSyncFunction:dispatchFunction withContext:&val];
+  [queue syncFunction:dispatchFunction withContext:&val];
   
+  STAssertEquals(val, 1, nil);
+}
+
+- (void)testSyncFunctionOnCurrentQueue {
+  GCDQueue *queue = [GCDQueue mainQueue];
+  __block int val = 0;
+  
+  [queue syncFunction:dispatchFunction withContext:&val];
+  
+  STAssertTrue([queue isCurrentQueue], nil);
   STAssertEquals(val, 1, nil);
 }
 

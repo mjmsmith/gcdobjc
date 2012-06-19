@@ -92,27 +92,27 @@ static GCDQueue *backgroundPriorityGlobalQueue;
 
 #pragma mark Public block methods.
 
-- (void)dispatchBlock:(dispatch_block_t)block {
+- (void)asyncBlock:(dispatch_block_t)block {
   dispatch_async(self.dispatchQueue, block);
 }
 
-- (void)dispatchBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group {
+- (void)asyncBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group {
   dispatch_group_async(group.dispatchGroup, self.dispatchQueue, block);
 }
 
-- (void)dispatchBlock:(dispatch_block_t)block afterSeconds:(double)seconds {
+- (void)asyncBlock:(dispatch_block_t)block afterSeconds:(double)seconds {
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC)), self.dispatchQueue, block);
 }
 
-- (void)dispatchBarrierBlock:(dispatch_block_t)block {
+- (void)asyncBarrierBlock:(dispatch_block_t)block {
   dispatch_barrier_async(self.dispatchQueue, block);
 }
 
-- (void)dispatchNotifyBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group {
+- (void)asyncNotifyBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group {
   dispatch_group_notify(group.dispatchGroup, self.dispatchQueue, block);
 }
 
-- (void)dispatchSyncBlock:(dispatch_block_t)block {
+- (void)syncBlock:(dispatch_block_t)block {
   if ([self isCurrentQueue]) {
     block();
   }
@@ -121,7 +121,7 @@ static GCDQueue *backgroundPriorityGlobalQueue;
   }
 }
 
-- (void)dispatchSyncBlock:(void (^)(size_t))block count:(size_t)count {
+- (void)syncBlock:(void (^)(size_t))block count:(size_t)count {
   if ([self isCurrentQueue]) {
     for (int i = 0; i < count; ++i) {
       block(i);
@@ -132,34 +132,34 @@ static GCDQueue *backgroundPriorityGlobalQueue;
   }
 }
 
-- (void)dispatchSyncBarrierBlock:(dispatch_block_t)block {
+- (void)syncBarrierBlock:(dispatch_block_t)block {
   // TODO How to deal with attempted dispatch on the current queue?
   dispatch_barrier_sync(self.dispatchQueue, block);
 }
 
 #pragma mark Public function methods.
 
-- (void)dispatchFunction:(dispatch_function_t)function withContext:(void *)context {
+- (void)asyncFunction:(dispatch_function_t)function withContext:(void *)context {
   dispatch_async_f(self.dispatchQueue, context, function);
 }
 
-- (void)dispatchFunction:(dispatch_function_t)function withContext:(void *)context inGroup:(GCDGroup *)group {
+- (void)asyncFunction:(dispatch_function_t)function withContext:(void *)context inGroup:(GCDGroup *)group {
   dispatch_group_async_f(group.dispatchGroup, self.dispatchQueue, context, function);
 }
 
-- (void)dispatchFunction:(dispatch_function_t)function withContext:(void *)context afterSeconds:(double)seconds {
+- (void)asyncFunction:(dispatch_function_t)function withContext:(void *)context afterSeconds:(double)seconds {
   dispatch_after_f(dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC)), self.dispatchQueue, context, function);
 }
 
-- (void)dispatchBarrierFunction:(dispatch_function_t)function withContext:(void *)context {
+- (void)asyncBarrierFunction:(dispatch_function_t)function withContext:(void *)context {
   dispatch_barrier_async_f(self.dispatchQueue, context, function);
 }
 
-- (void)dispatchNotifyFunction:(dispatch_function_t)function withContext:(void *)context inGroup:(GCDGroup *)group {
+- (void)asyncNotifyFunction:(dispatch_function_t)function withContext:(void *)context inGroup:(GCDGroup *)group {
   dispatch_group_notify_f(group.dispatchGroup, self.dispatchQueue, context, function);
 }
 
-- (void)dispatchSyncFunction:(dispatch_function_t)function withContext:(void *)context {
+- (void)syncFunction:(dispatch_function_t)function withContext:(void *)context {
   if ([self isCurrentQueue]) {
     function(context);
   }
@@ -168,7 +168,7 @@ static GCDQueue *backgroundPriorityGlobalQueue;
   }
 }
 
-- (void)dispatchSyncFunction:(void (*)(void *, size_t))function withContext:(void *)context count:(size_t)count {
+- (void)syncFunction:(void (*)(void *, size_t))function withContext:(void *)context count:(size_t)count {
   if ([self isCurrentQueue]) {
     for (int i = 0; i < count; ++i) {
       function(context, i);
@@ -179,7 +179,7 @@ static GCDQueue *backgroundPriorityGlobalQueue;
   }
 }
 
-- (void)dispatchSyncBarrierFunction:(dispatch_function_t)function withContext:(void *)context {
+- (void)syncBarrierFunction:(dispatch_function_t)function withContext:(void *)context {
   // TODO How to deal with attempted dispatch on the current queue?
   dispatch_barrier_sync_f(self.dispatchQueue, context, function);
 }
