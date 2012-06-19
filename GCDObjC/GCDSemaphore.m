@@ -32,12 +32,12 @@
   return dispatch_semaphore_signal(self.dispatchSemaphore);
 }
 
-- (long)waitSeconds:(double)seconds {
-  return dispatch_semaphore_wait(self.dispatchSemaphore, dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC)));
+- (long)wait {
+  return dispatch_semaphore_wait(self.dispatchSemaphore, DISPATCH_TIME_FOREVER);
 }
 
-- (long)waitForever {
-  return dispatch_semaphore_wait(self.dispatchSemaphore, DISPATCH_TIME_FOREVER);
+- (long)wait:(double)seconds {
+  return dispatch_semaphore_wait(self.dispatchSemaphore, dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC)));
 }
 
 - (dispatch_semaphore_t)dispatchSemaphore {

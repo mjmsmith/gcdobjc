@@ -48,7 +48,7 @@
     [semaphore signal];
   }];
   
-  [semaphore waitForever];
+  [semaphore wait];
 
   STAssertEquals(val, 1, nil);
 }
@@ -64,7 +64,7 @@
   } afterSeconds:0.5];
   
   STAssertEquals(val, 0, nil);
-  [semaphore waitForever];
+  [semaphore wait];
   STAssertEquals(val, 1, nil);
 }
 

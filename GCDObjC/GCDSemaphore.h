@@ -17,7 +17,7 @@
 - initWithValue:(long)value;
 
 - (long)signal;
-- (long)waitSeconds:(double)seconds;
-- (long)waitForever;
+- (long)wait;
+- (long)wait:(double)seconds;
 
 @end

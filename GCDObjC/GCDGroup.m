@@ -29,8 +29,12 @@
   dispatch_group_leave(self.dispatchGroup);
 }
 
-- (long)wait:(dispatch_time_t)timeout {
-  return dispatch_group_wait(self.dispatchGroup, timeout);
+- (long)wait {
+  return dispatch_group_wait(self.dispatchGroup, DISPATCH_TIME_FOREVER);
+}
+
+- (long)wait:(double)seconds {
+  return dispatch_group_wait(self.dispatchGroup, dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC)));
 }
 
 - (dispatch_group_t)dispatchGroup {

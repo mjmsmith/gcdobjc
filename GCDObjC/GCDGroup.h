@@ -16,6 +16,7 @@
 
 - (void)enter;
 - (void)leave;
-- (long)wait:(dispatch_time_t)timeout;
+- (long)wait;
+- (long)wait:(double)seconds;
 
 @end
