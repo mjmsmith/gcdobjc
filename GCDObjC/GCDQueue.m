@@ -8,28 +8,48 @@
 #import "GCDGroup.h"
 #import "GCDQueue.h"
 
-static dispatch_queue_t mainDispatchQueue;
-
 @interface GCDQueue ()
 - (id)initWithDispatchQueue:(dispatch_queue_t)dispatchQueue;
 @end
 
 @implementation GCDQueue
 
+static GCDQueue *mainQueue;
+static GCDQueue *globalQueue;
+static GCDQueue *highPriorityGlobalQueue;
+static GCDQueue *lowPriorityGlobalQueue;
+static GCDQueue *backgroundPriorityGlobalQueue;
+
 #pragma mark Static methods.
 
 + (void)initialize {
   if ([self class] == [GCDQueue class]) {
-    mainDispatchQueue = dispatch_get_main_queue();
+    mainQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_main_queue()];
+    globalQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
+    highPriorityGlobalQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
+    lowPriorityGlobalQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0)];
+    backgroundPriorityGlobalQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)];
   }
 }  
 
 + (GCDQueue *)mainQueue {
-  return [[GCDQueue alloc] initWithDispatchQueue:mainDispatchQueue];
+  return mainQueue;
 }
 
-+ (GCDQueue *)globalQueueWithPriority:(long)priority flags:(unsigned long)flags {
-  return [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_global_queue(priority, flags)];
++ (GCDQueue *)globalQueue {
+  return globalQueue;
+}
+
++ (GCDQueue *)highPriorityGlobalQueue {
+  return highPriorityGlobalQueue;
+}
+
++ (GCDQueue *)lowPriorityGlobalQueue {
+  return lowPriorityGlobalQueue;
+}
+
++ (GCDQueue *)backgroundPriorityGlobalQueue {
+  return backgroundPriorityGlobalQueue;
 }
 
 + (GCDQueue *)currentQueue {
@@ -37,6 +57,10 @@ static dispatch_queue_t mainDispatchQueue;
 }
 
 #pragma mark Construction.
+
+- (id)init {
+  return [self initWithLabel:nil attr:DISPATCH_QUEUE_SERIAL];
+}
 
 - (id)initSerial {
   return [self initWithLabel:nil attr:DISPATCH_QUEUE_SERIAL];
@@ -63,9 +87,7 @@ static dispatch_queue_t mainDispatchQueue;
 }
 
 - (void)dealloc {
-  if (self.dispatchQueue != mainDispatchQueue) {
-    dispatch_release(self.dispatchQueue);
-  }
+  dispatch_release(self.dispatchQueue);
 }
 
 #pragma mark Public block methods.
@@ -91,14 +113,27 @@ static dispatch_queue_t mainDispatchQueue;
 }
 
 - (void)dispatchSyncBlock:(dispatch_block_t)block {
-  dispatch_sync(self.dispatchQueue, block);
+  if ([self isCurrentQueue]) {
+    block();
+  }
+  else {
+    dispatch_sync(self.dispatchQueue, block);
+  }
 }
 
-- (void)dispatchSyncBlock:(void (^)(size_t))block forIterations:(size_t)iterations {
-  dispatch_apply(iterations, self.dispatchQueue, block);
+- (void)dispatchSyncBlock:(void (^)(size_t))block count:(size_t)count {
+  if ([self isCurrentQueue]) {
+    for (int i = 0; i < count; ++i) {
+      block(i);
+    }
+  }
+  else {
+    dispatch_apply(count, self.dispatchQueue, block);
+  }
 }
 
 - (void)dispatchSyncBarrierBlock:(dispatch_block_t)block {
+  // TODO How to deal with attempted dispatch on the current queue?
   dispatch_barrier_sync(self.dispatchQueue, block);
 }
 
@@ -125,18 +160,35 @@ static dispatch_queue_t mainDispatchQueue;
 }
 
 - (void)dispatchSyncFunction:(dispatch_function_t)function withContext:(void *)context {
-  dispatch_sync_f(self.dispatchQueue, context, function);
+  if ([self isCurrentQueue]) {
+    function(context);
+  }
+  else {
+    dispatch_sync_f(self.dispatchQueue, context, function);
+  }
 }
 
-- (void)dispatchSyncFunction:(void (*)(void *, size_t))function withContext:(void *)context forIterations:(size_t)iterations {
-  dispatch_apply_f(iterations, self.dispatchQueue, context, function);
+- (void)dispatchSyncFunction:(void (*)(void *, size_t))function withContext:(void *)context count:(size_t)count {
+  if ([self isCurrentQueue]) {
+    for (int i = 0; i < count; ++i) {
+      function(context, i);
+    }
+  }
+  else {
+    dispatch_apply_f(count, self.dispatchQueue, context, function);
+  }
 }
 
 - (void)dispatchSyncBarrierFunction:(dispatch_function_t)function withContext:(void *)context {
+  // TODO How to deal with attempted dispatch on the current queue?
   dispatch_barrier_sync_f(self.dispatchQueue, context, function);
 }
 
 #pragma mark Misc public methods.
+
+- (BOOL)isCurrentQueue {
+  return self.dispatchQueue == dispatch_get_current_queue();
+}
 
 - (void)suspend {
   dispatch_suspend(self.dispatchQueue);

@@ -6,6 +6,7 @@
 //
 
 #import <SenTestingKit/SenTestingKit.h>
+#import <dispatch/dispatch.h>
 
 #import "GCDObjC.h"
 
@@ -22,40 +23,72 @@
   [super tearDown];
 }
 
+- (void)testMainQueue {
+  STAssertEquals([GCDQueue mainQueue].dispatchQueue, dispatch_get_main_queue(), nil);
+}
+
+- (void)testGlobalQueues {
+  STAssertEquals([GCDQueue globalQueue].dispatchQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), nil);
+  STAssertEquals([GCDQueue highPriorityGlobalQueue].dispatchQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), nil);
+  STAssertEquals([GCDQueue lowPriorityGlobalQueue].dispatchQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), nil);
+  STAssertEquals([GCDQueue backgroundPriorityGlobalQueue].dispatchQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), nil);
+}
+
+- (void)testCurrentQueue {
+  STAssertEquals([GCDQueue currentQueue].dispatchQueue, dispatch_get_current_queue(), nil);
+}
+
 - (void)testDispatchBlock {
-  GCDQueue *queue = [[GCDQueue alloc] initSerial];
+  GCDSemaphore *semaphore = [[GCDSemaphore alloc] init];
+  GCDQueue *queue = [[GCDQueue alloc] init];
   __block int val = 0;
   
   [queue dispatchBlock:^{
-    ++val; 
+    ++val;
+    [semaphore signal];
   }];
   
-  sleep(1);
-  STAssertEquals(val, 1, @"testDispatchBlock");
+  [semaphore waitForever];
+
+  STAssertEquals(val, 1, nil);
 }
 
 - (void)testDispatchBlockAfterSeconds {
-  GCDQueue *queue = [[GCDQueue alloc] initSerial];
+  GCDSemaphore *semaphore = [[GCDSemaphore alloc] init];
+  GCDQueue *queue = [[GCDQueue alloc] init];
   __block int val = 0;
   
   [queue dispatchBlock:^{
     ++val; 
+    [semaphore signal];
   } afterSeconds:0.5];
   
-  STAssertEquals(val, 0, @"testDispatchBlock");
-  sleep(1);
-  STAssertEquals(val, 1, @"testDispatchBlock");
+  STAssertEquals(val, 0, nil);
+  [semaphore waitForever];
+  STAssertEquals(val, 1, nil);
 }
 
 - (void)testDispatchSyncBlock {
-  GCDQueue *queue = [[GCDQueue alloc] initSerial];
+  GCDQueue *queue = [[GCDQueue alloc] init];
   __block int val = 0;
   
   [queue dispatchSyncBlock:^{
     ++val; 
   }];
     
-  STAssertEquals(val, 1, @"testDispatchSync");
+  STAssertEquals(val, 1, nil);
+}
+
+- (void)testDispatchSyncBlockOnCurrentQueue {
+  GCDQueue *queue = [GCDQueue mainQueue];
+  __block int val = 0;
+  
+  [queue dispatchSyncBlock:^{
+    ++val; 
+  }];
+  
+  STAssertTrue([queue isCurrentQueue], nil);
+  STAssertEquals(val, 1, nil);
 }
 
 void dispatchFunction(void *context) {
@@ -63,12 +96,12 @@ void dispatchFunction(void *context) {
 }
 
 - (void)testDispatchSyncFunction {
-  GCDQueue *queue = [[GCDQueue alloc] initSerial];
+  GCDQueue *queue = [[GCDQueue alloc] init];
   __block int val = 0;
   
   [queue dispatchSyncFunction:dispatchFunction withContext:&val];
   
-  STAssertEquals(val, 1, @"testDispatchFunction");
+  STAssertEquals(val, 1, nil);
 }
 
 @end

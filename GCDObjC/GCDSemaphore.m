@@ -14,6 +14,10 @@
 
 #pragma mark Construction.
 
+- (id)init {
+  return [self initWithValue:0];
+}
+
 - (id)initWithValue:(long)value {
   return [super initWithDispatchObject:dispatch_semaphore_create(value)];
 }
@@ -25,11 +29,15 @@
 #pragma mark Public methods.
 
 - (long)signal {
-  return dispatch_semaphore_signal([self dispatchSemaphore]);
+  return dispatch_semaphore_signal(self.dispatchSemaphore);
 }
 
-- (long)wait:(dispatch_time_t)timeout {
-  return dispatch_semaphore_wait([self dispatchSemaphore], timeout);
+- (long)waitSeconds:(double)seconds {
+  return dispatch_semaphore_wait(self.dispatchSemaphore, dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC)));
+}
+
+- (long)waitForever {
+  return dispatch_semaphore_wait(self.dispatchSemaphore, DISPATCH_TIME_FOREVER);
 }
 
 - (dispatch_semaphore_t)dispatchSemaphore {

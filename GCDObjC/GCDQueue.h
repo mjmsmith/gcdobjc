@@ -17,7 +17,10 @@
 @property (unsafe_unretained, readonly, nonatomic) dispatch_queue_t dispatchQueue;
 
 + (GCDQueue *)mainQueue;
-+ (GCDQueue *)globalQueueWithPriority:(long)priority flags:(unsigned long)flags;
++ (GCDQueue *)globalQueue;
++ (GCDQueue *)highPriorityGlobalQueue;
++ (GCDQueue *)lowPriorityGlobalQueue;
++ (GCDQueue *)backgroundPriorityGlobalQueue;
 + (GCDQueue *)currentQueue;
 
 - (id)initSerial;
@@ -34,7 +37,7 @@
 - (void)dispatchNotifyBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group;
 
 - (void)dispatchSyncBlock:(dispatch_block_t)block;
-- (void)dispatchSyncBlock:(void (^)(size_t))block forIterations:(size_t)iterations;
+- (void)dispatchSyncBlock:(void (^)(size_t))block count:(size_t)count;
 
 - (void)dispatchSyncBarrierBlock:(dispatch_block_t)block;
 
@@ -46,9 +49,11 @@
 - (void)dispatchNotifyFunction:(dispatch_function_t)function withContext:(void *)context inGroup:(GCDGroup *)group;
 
 - (void)dispatchSyncFunction:(dispatch_function_t)function withContext:(void *)context;
-- (void)dispatchSyncFunction:(void (*)(void *, size_t))function withContext:(void *)context forIterations:(size_t)iterations;
+- (void)dispatchSyncFunction:(void (*)(void *, size_t))function withContext:(void *)context count:(size_t)count;
 
 - (void)dispatchSyncBarrierFunction:(dispatch_function_t)function withContext:(void *)context;
+
+- (BOOL)isCurrentQueue;
 
 - (void)suspend;
 - (void)resume;

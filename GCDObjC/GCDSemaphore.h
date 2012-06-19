@@ -17,6 +17,7 @@
 - initWithValue:(long)value;
 
 - (long)signal;
-- (long)wait:(dispatch_time_t)timeout;
+- (long)waitSeconds:(double)seconds;
+- (long)waitForever;
 
 @end
