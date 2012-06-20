@@ -15,14 +15,6 @@
 
 @implementation GCDQueueTests
 
-- (void)setUp {
-  [super setUp];
-}
-
-- (void)tearDown {
-  [super tearDown];
-}
-
 - (void)testMainQueue {
   STAssertEquals([GCDQueue mainQueue].dispatchQueue, dispatch_get_main_queue(), nil);
 }
@@ -99,7 +91,7 @@
   STAssertEquals(val, 1, nil);
 }
 
-void dispatchFunction(void *context) {
+static void syncFunction(void *context) {
   ++(*(int *)context);
 }
 
@@ -107,7 +99,7 @@ void dispatchFunction(void *context) {
   GCDQueue *queue = [[GCDQueue alloc] init];
   __block int val = 0;
   
-  [queue syncFunction:dispatchFunction withContext:&val];
+  [queue syncFunction:syncFunction withContext:&val];
   
   STAssertEquals(val, 1, nil);
 }
@@ -116,7 +108,7 @@ void dispatchFunction(void *context) {
   GCDQueue *queue = [GCDQueue mainQueue];
   __block int val = 0;
   
-  [queue syncFunction:dispatchFunction withContext:&val];
+  [queue syncFunction:syncFunction withContext:&val];
   
   STAssertTrue([queue isCurrentQueue], nil);
   STAssertEquals(val, 1, nil);

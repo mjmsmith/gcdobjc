@@ -10,7 +10,9 @@
 
 @interface GCDSingleton : NSObject
 
-- (void)dispatchBlock:(dispatch_block_t)block;
-- (void)dispatchFunction:(dispatch_function_t)function withContext:(void *)context;
+@property (assign, readwrite, nonatomic) dispatch_once_t once;
+
+- (void)syncBlock:(dispatch_block_t)block;
+- (void)syncFunction:(dispatch_function_t)function withContext:(void *)context;
 
 @end

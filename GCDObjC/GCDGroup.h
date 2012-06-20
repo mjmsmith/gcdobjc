@@ -12,7 +12,7 @@
 
 @interface GCDGroup : GCDObject
 
-@property (unsafe_unretained, readonly, nonatomic) dispatch_group_t dispatchGroup;
+@property (assign, readonly, nonatomic) dispatch_group_t dispatchGroup;
 
 - (void)enter;
 - (void)leave;

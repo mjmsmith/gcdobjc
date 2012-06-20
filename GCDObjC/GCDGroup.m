@@ -7,6 +7,9 @@
 
 #import "GCDGroup.h"
 
+@interface GCDGroup ()
+@end
+
 @implementation GCDGroup
 
 #pragma mark Construction.

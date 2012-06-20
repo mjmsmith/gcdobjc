@@ -14,7 +14,7 @@
 
 @interface GCDQueue : GCDObject
 
-@property (unsafe_unretained, readonly, nonatomic) dispatch_queue_t dispatchQueue;
+@property (assign, readonly, nonatomic) dispatch_queue_t dispatchQueue;
 
 + (GCDQueue *)mainQueue;
 + (GCDQueue *)globalQueue;

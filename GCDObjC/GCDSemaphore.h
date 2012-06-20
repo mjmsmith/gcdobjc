@@ -12,7 +12,7 @@
 
 @interface GCDSemaphore : GCDObject
 
-@property (unsafe_unretained, readonly, nonatomic) dispatch_semaphore_t dispatchSemaphore;
+@property (assign, readonly, nonatomic) dispatch_semaphore_t dispatchSemaphore;
 
 - initWithValue:(long)value;
 

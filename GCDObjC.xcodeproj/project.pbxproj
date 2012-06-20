@@ -29,6 +29,8 @@
 		4D930E66158D71F7009538FB /* GCDGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D930E64158D71F7009538FB /* GCDGroup.m */; };
 		4D930E6A158D728B009538FB /* GCDSemaphore.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D930E68158D728B009538FB /* GCDSemaphore.h */; };
 		4D930E6B158D728B009538FB /* GCDSemaphore.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D930E69158D728B009538FB /* GCDSemaphore.m */; };
+		4DF1F785159171F40025D4C5 /* GCDSingletonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF1F784159171F40025D4C5 /* GCDSingletonTests.m */; };
+		4DF1F789159176330025D4C5 /* GCDObjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF1F788159176330025D4C5 /* GCDObjectTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +62,8 @@
 		4D930E64158D71F7009538FB /* GCDGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDGroup.m; sourceTree = "<group>"; };
 		4D930E68158D728B009538FB /* GCDSemaphore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDSemaphore.h; sourceTree = "<group>"; };
 		4D930E69158D728B009538FB /* GCDSemaphore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDSemaphore.m; sourceTree = "<group>"; };
+		4DF1F784159171F40025D4C5 /* GCDSingletonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDSingletonTests.m; sourceTree = "<group>"; };
+		4DF1F788159176330025D4C5 /* GCDObjectTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDObjectTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,16 +120,16 @@
 			isa = PBXGroup;
 			children = (
 				4D06C16D158EB92200CBC711 /* GCDObjC.h */,
-				4D6F60421584152C0023150C /* GCDQueue.h */,
-				4D6F60431584152C0023150C /* GCDQueue.m */,
-				4D06C16F158EC0C800CBC711 /* GCDSingleton.h */,
-				4D06C170158EC0C800CBC711 /* GCDSingleton.m */,
-				4D06C167158EB2F800CBC711 /* GCDObject.h */,
-				4D06C168158EB2F800CBC711 /* GCDObject.m */,
-				4D930E68158D728B009538FB /* GCDSemaphore.h */,
-				4D930E69158D728B009538FB /* GCDSemaphore.m */,
 				4D930E63158D71F7009538FB /* GCDGroup.h */,
 				4D930E64158D71F7009538FB /* GCDGroup.m */,
+				4D06C167158EB2F800CBC711 /* GCDObject.h */,
+				4D06C168158EB2F800CBC711 /* GCDObject.m */,
+				4D6F60421584152C0023150C /* GCDQueue.h */,
+				4D6F60431584152C0023150C /* GCDQueue.m */,
+				4D930E68158D728B009538FB /* GCDSemaphore.h */,
+				4D930E69158D728B009538FB /* GCDSemaphore.m */,
+				4D06C16F158EC0C800CBC711 /* GCDSingleton.h */,
+				4D06C170158EC0C800CBC711 /* GCDSingleton.m */,
 			);
 			path = GCDObjC;
 			sourceTree = "<group>";
@@ -133,7 +137,9 @@
 		4D6F6031158414F70023150C /* GCDObjCTests */ = {
 			isa = PBXGroup;
 			children = (
+				4DF1F788159176330025D4C5 /* GCDObjectTests.m */,
 				4D6F6038158414F70023150C /* GCDQueueTests.m */,
+				4DF1F784159171F40025D4C5 /* GCDSingletonTests.m */,
 				4D6F6032158414F70023150C /* Supporting Files */,
 			);
 			path = GCDObjCTests;
@@ -279,6 +285,8 @@
 				4D6F60461584152C0023150C /* GCDQueue.m in Sources */,
 				4D06C1D4158EDF9F00CBC711 /* GCDSemaphore.m in Sources */,
 				4D06C173158EC0C800CBC711 /* GCDSingleton.m in Sources */,
+				4DF1F785159171F40025D4C5 /* GCDSingletonTests.m in Sources */,
+				4DF1F789159176330025D4C5 /* GCDObjectTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
