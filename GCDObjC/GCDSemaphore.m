@@ -22,10 +22,6 @@
   return [super initWithDispatchObject:dispatch_semaphore_create(value)];
 }
 
-- (void)dealloc {
-  dispatch_release(self.dispatchSemaphore);
-}
-
 #pragma mark Public methods.
 
 - (long)signal {

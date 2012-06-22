@@ -21,6 +21,10 @@
   return self;
 }
 
+- (void)dealloc {
+  dispatch_release(self.dispatchObject);
+}
+
 #pragma mark Public methods.
 
 - (void *)context {

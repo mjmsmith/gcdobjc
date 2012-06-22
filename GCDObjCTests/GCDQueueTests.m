@@ -1,6 +1,6 @@
 //
-//  GCDObjCTests.m
-//  GCDObjCTests
+//  GCDQueueTests.m
+//  GCDObjC
 //
 //  Copyright (c) 2012 Mark Smith. All rights reserved.
 //

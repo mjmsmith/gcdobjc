@@ -18,10 +18,6 @@
   return [super initWithDispatchObject:dispatch_group_create()];
 }
 
-- (void)dealloc {
-  dispatch_release(self.dispatchGroup);
-}
-
 #pragma mark Public methods.
 
 - (void)enter {

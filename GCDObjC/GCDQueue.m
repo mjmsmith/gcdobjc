@@ -86,10 +86,6 @@ static GCDQueue *backgroundPriorityGlobalQueue;
   return [super initWithDispatchObject:dispatchQueue];
 }
 
-- (void)dealloc {
-  dispatch_release(self.dispatchQueue);
-}
-
 #pragma mark Public block methods.
 
 - (void)asyncBlock:(dispatch_block_t)block {
