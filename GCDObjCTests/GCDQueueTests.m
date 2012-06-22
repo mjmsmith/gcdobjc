@@ -114,4 +114,10 @@ static void syncFunction(void *context) {
   STAssertEquals(val, 1, nil);
 }
 
+- (void)testLabel {
+  GCDQueue *queue = [[GCDQueue alloc] initSerialWithLabel:@"testLabel"];
+  
+  STAssertEqualObjects(queue.label, @"testLabel", nil);
+}
+
 @end

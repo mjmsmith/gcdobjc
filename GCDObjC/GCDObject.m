@@ -31,6 +31,10 @@
   return dispatch_set_context(self.dispatchObject, context);
 }
 
+- (void)setFinalizerFunction:(dispatch_function_t)function {
+  dispatch_set_finalizer_f(self.dispatchObject, function);
+}
+
 - (void)logDebugWithMessage:(NSString *)message {
   dispatch_debug(self.dispatchObject, "%s", [message cStringUsingEncoding:NSUTF8StringEncoding]);
 }

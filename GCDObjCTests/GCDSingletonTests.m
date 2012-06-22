@@ -17,7 +17,6 @@
 
 - (void)testSyncBlock {
   GCDSingleton *singleton = [[GCDSingleton alloc] init];
-  
   __block int val = 0;
   
   for (int i = 0; i < 10; ++i) {
@@ -33,7 +32,6 @@ static void syncFunction(void *context) {
 
 - (void)testSyncFunction {
   GCDSingleton *singleton = [[GCDSingleton alloc] init];
-  
   __block int val = 0;
   
   for (int i = 0; i < 10; ++i) {

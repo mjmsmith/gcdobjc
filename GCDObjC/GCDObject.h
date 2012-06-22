@@ -15,4 +15,7 @@
 
 - (id)initWithDispatchObject:(dispatch_object_t)dispatchObject;
 
+- (void)setFinalizerFunction:(dispatch_function_t)function;
+- (void)logDebugWithMessage:(NSString *)message;
+
 @end
