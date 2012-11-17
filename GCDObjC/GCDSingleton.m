@@ -8,11 +8,10 @@
 #import "GCDSingleton.h"
 
 @interface GCDSingleton ()
+@property (assign, readwrite, nonatomic) dispatch_once_t once;
 @end
 
 @implementation GCDSingleton
-
-@synthesize once = _once;
 
 - (void)syncBlock:(dispatch_block_t)block {
   dispatch_once(&_once, block);

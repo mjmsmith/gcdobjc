@@ -9,8 +9,6 @@
 
 @implementation GCDObject
 
-@synthesize dispatchObject = _dispatchObject;
-
 #pragma mark Construction.
 
 - (id)initWithDispatchObject:(dispatch_object_t)dispatchObject {
