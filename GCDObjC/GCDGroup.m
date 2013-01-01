@@ -12,7 +12,11 @@
 
 @implementation GCDGroup
 
-#pragma mark Construction.
+#pragma mark Lifecycle.
+
++ (GCDGroup *)group {
+  return [[self alloc] init];
+}
 
 - (id)init {
   return [super initWithDispatchObject:dispatch_group_create()];

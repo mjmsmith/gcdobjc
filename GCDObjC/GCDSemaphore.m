@@ -12,7 +12,11 @@
 
 @implementation GCDSemaphore
 
-#pragma mark Construction.
+#pragma mark Lifecycle.
+
++ (GCDSemaphore *)semaphore {
+  return [[self alloc] init];
+}
 
 - (id)init {
   return [self initWithValue:0];
@@ -39,6 +43,5 @@
 - (dispatch_semaphore_t)dispatchSemaphore {
   return self.dispatchObject._dsema;
 }
-
 
 @end

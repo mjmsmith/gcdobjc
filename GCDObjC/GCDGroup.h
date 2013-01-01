@@ -14,6 +14,8 @@
 
 @property (assign, readonly, nonatomic) dispatch_group_t dispatchGroup;
 
++ (GCDGroup *)group;
+
 - (void)enter;
 - (void)leave;
 - (long)wait;

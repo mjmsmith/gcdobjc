@@ -23,6 +23,8 @@
 + (GCDQueue *)backgroundPriorityGlobalQueue;
 + (GCDQueue *)currentQueue;
 
++ (GCDQueue *) queue;
+
 - (id)initSerial;
 - (id)initSerialWithLabel:(NSString *)label;
 - (id)initConcurrent;

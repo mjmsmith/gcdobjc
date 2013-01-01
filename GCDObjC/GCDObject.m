@@ -7,13 +7,27 @@
 
 #import "GCDObject.h"
 
+@interface GCDObject ()
+@property (assign, readwrite, nonatomic) dispatch_object_t dispatchObject;
+@end
+
 @implementation GCDObject
 
-#pragma mark Construction.
+#pragma mark Static once methods.
+
++ (void)syncBlock:(dispatch_block_t)block once:(dispatch_once_t *)once {
+  dispatch_once(once, block);
+}
+
++ (void)syncFunction:(dispatch_function_t)function withContext:(void *)context once:(dispatch_once_t *)once {
+  dispatch_once_f(once, context, function);
+}
+
+#pragma mark Lifecycle.
 
 - (id)initWithDispatchObject:(dispatch_object_t)dispatchObject {
   if ((self = [super init]) != nil) {
-    _dispatchObject = dispatchObject;
+    self.dispatchObject = dispatchObject;
   }
   
   return self;

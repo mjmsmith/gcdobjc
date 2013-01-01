@@ -14,8 +14,9 @@
 
 @property (assign, readonly, nonatomic) dispatch_semaphore_t dispatchSemaphore;
 
-- initWithValue:(long)value;
++ (GCDSemaphore *)semaphore;
 
+- initWithValue:(long)value;
 - (long)signal;
 - (long)wait;
 - (long)wait:(double)seconds;

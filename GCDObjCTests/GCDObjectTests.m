@@ -16,7 +16,7 @@
 @implementation GCDObjectTests
 
 - (void)testContext {
-  GCDSemaphore *semaphore = [[GCDSemaphore alloc] initWithValue:0];
+  GCDSemaphore *semaphore = [GCDSemaphore semaphore];
   
   STAssertEquals(semaphore.context, NULL, nil);
   semaphore.context = &semaphore;
@@ -28,12 +28,12 @@ void finalizerFunction(void *context) {
 }
 
 - (void)testSetFinalizerFunction {
-  GCDSemaphore *semaphore = [[GCDSemaphore alloc] initWithValue:0];
-  GCDQueue *queue = [[GCDQueue alloc] init];
+  GCDSemaphore *semaphore = [GCDSemaphore semaphore];
+  GCDQueue *queue = [GCDQueue queue];
   __block int val = 0;
   
   [queue asyncBlock:^{
-    GCDSemaphore *blockSemaphore = [[GCDSemaphore alloc] initWithValue:0];
+    GCDSemaphore *blockSemaphore = [GCDSemaphore semaphore];
     
     blockSemaphore.context = (__bridge void *)semaphore;
     [blockSemaphore setFinalizerFunction:finalizerFunction];
@@ -47,9 +47,35 @@ void finalizerFunction(void *context) {
 }
 
 - (void)testLogDebugMessage {
-  GCDQueue *queue = [[GCDQueue alloc] init];
+  GCDQueue *queue = [GCDQueue queue];
 
   STAssertNoThrow([queue logDebugWithMessage:@"testLogDebugMessage"], nil);
+}
+
+- (void)testOnceBlock {
+  static dispatch_once_t once = 0;
+  __block int val = 0;
+  
+  for (int i = 0; i < 10; ++i) {
+    [GCDObject syncBlock:^{ ++val; } once:&once];
+  }
+  
+  STAssertEquals(val, 1, nil);
+}
+
+static void function(void *context) {
+  ++(*(int *)context);
+}
+
+- (void)testOnceFunction {
+  static dispatch_once_t once = 0;
+  __block int val = 0;
+  
+  for (int i = 0; i < 10; ++i) {
+    [GCDObject syncFunction:function withContext:&val once:&once];
+  }
+  
+  STAssertEquals(val, 1, nil);
 }
 
 @end

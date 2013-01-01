@@ -20,17 +20,7 @@ static GCDQueue *highPriorityGlobalQueue;
 static GCDQueue *lowPriorityGlobalQueue;
 static GCDQueue *backgroundPriorityGlobalQueue;
 
-#pragma mark Static methods.
-
-+ (void)initialize {
-  if ([self class] == [GCDQueue class]) {
-    mainQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_main_queue()];
-    globalQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
-    highPriorityGlobalQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
-    lowPriorityGlobalQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0)];
-    backgroundPriorityGlobalQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)];
-  }
-}  
+#pragma mark Global queue accessors.
 
 + (GCDQueue *)mainQueue {
   return mainQueue;
@@ -56,7 +46,21 @@ static GCDQueue *backgroundPriorityGlobalQueue;
   return [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_current_queue()];
 }
 
-#pragma mark Construction.
+#pragma mark Lifecycle.
+
++ (void)initialize {
+  if ([self class] == [GCDQueue class]) {
+    mainQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_main_queue()];
+    globalQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
+    highPriorityGlobalQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
+    lowPriorityGlobalQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0)];
+    backgroundPriorityGlobalQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)];
+  }
+}
+
++ (GCDQueue *)queue {
+  return [[self alloc] init];
+}
 
 - (id)init {
   return [self initWithLabel:nil attr:DISPATCH_QUEUE_SERIAL];

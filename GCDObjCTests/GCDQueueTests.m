@@ -31,8 +31,8 @@
 }
 
 - (void)testAsyncBlock {
-  GCDSemaphore *semaphore = [[GCDSemaphore alloc] init];
-  GCDQueue *queue = [[GCDQueue alloc] init];
+  GCDSemaphore *semaphore = [GCDSemaphore semaphore];
+  GCDQueue *queue = [GCDQueue queue];
   __block int val = 0;
   
   [queue asyncBlock:^{
@@ -46,8 +46,8 @@
 }
 
 - (void)testAsyncBlockAfterDelay {
-  GCDSemaphore *semaphore = [[GCDSemaphore alloc] init];
-  GCDQueue *queue = [[GCDQueue alloc] init];
+  GCDSemaphore *semaphore = [GCDSemaphore semaphore];
+  GCDQueue *queue = [GCDQueue queue];
   __block int val = 0;
   
   [queue asyncBlock:^{
@@ -61,8 +61,8 @@
 }
 
 - (void)testAsyncBlockInGroup {
-  GCDQueue *queue = [[GCDQueue alloc] init];
-  GCDGroup *group = [[GCDGroup alloc] init];
+  GCDQueue *queue = [GCDQueue queue];
+  GCDGroup *group = [GCDGroup group];
   __block int val = 0;
   
   [queue asyncBlock:^{ ++val; } inGroup:group];
@@ -73,7 +73,7 @@
 }
 
 - (void)testSyncBlock {
-  GCDQueue *queue = [[GCDQueue alloc] init];
+  GCDQueue *queue = [GCDQueue queue];
   __block int val = 0;
   
   [queue syncBlock:^{ ++val; }];
@@ -96,7 +96,7 @@ static void syncFunction(void *context) {
 }
 
 - (void)testSyncFunction {
-  GCDQueue *queue = [[GCDQueue alloc] init];
+  GCDQueue *queue = [GCDQueue queue];
   __block int val = 0;
   
   [queue syncFunction:syncFunction withContext:&val];
