@@ -14,11 +14,7 @@
 
 #pragma mark Lifecycle.
 
-+ (GCDGroup *)group {
-  return [[self alloc] init];
-}
-
-- (id)init {
+- (instancetype)init {
   return [super initWithDispatchObject:dispatch_group_create()];
 }
 
@@ -43,7 +39,6 @@
 - (dispatch_group_t)dispatchGroup {
   return self.dispatchObject._dg;
 }
-
 
 
 @end

@@ -5,34 +5,34 @@
 //  Copyright (c) 2012 Mark Smith. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import <dispatch/dispatch.h>
 
 #import "GCDObjC.h"
 
-@interface GCDQueueTests : SenTestCase
+@interface GCDQueueTests : XCTestCase
 @end
 
 @implementation GCDQueueTests
 
 - (void)testMainQueue {
-  STAssertEquals([GCDQueue mainQueue].dispatchQueue, dispatch_get_main_queue(), nil);
+  XCTAssertEqual([GCDQueue mainQueue].dispatchQueue, dispatch_get_main_queue());
 }
 
 - (void)testGlobalQueues {
-  STAssertEquals([GCDQueue globalQueue].dispatchQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), nil);
-  STAssertEquals([GCDQueue highPriorityGlobalQueue].dispatchQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), nil);
-  STAssertEquals([GCDQueue lowPriorityGlobalQueue].dispatchQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), nil);
-  STAssertEquals([GCDQueue backgroundPriorityGlobalQueue].dispatchQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), nil);
+  XCTAssertEqual([GCDQueue globalQueue].dispatchQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
+  XCTAssertEqual([GCDQueue highPriorityGlobalQueue].dispatchQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
+  XCTAssertEqual([GCDQueue lowPriorityGlobalQueue].dispatchQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0));
+  XCTAssertEqual([GCDQueue backgroundPriorityGlobalQueue].dispatchQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0));
 }
 
 - (void)testCurrentQueue {
-  STAssertEquals([GCDQueue currentQueue].dispatchQueue, dispatch_get_current_queue(), nil);
+  XCTAssertEqual([GCDQueue currentQueue].dispatchQueue, dispatch_get_current_queue());
 }
 
 - (void)testAsyncBlock {
-  GCDSemaphore *semaphore = [GCDSemaphore semaphore];
-  GCDQueue *queue = [GCDQueue queue];
+  GCDSemaphore *semaphore = [GCDSemaphore new];
+  GCDQueue *queue = [GCDQueue new];
   __block int val = 0;
   
   [queue asyncBlock:^{
@@ -42,12 +42,12 @@
   
   [semaphore wait];
 
-  STAssertEquals(val, 1, nil);
+  XCTAssertEqual(val, 1);
 }
 
 - (void)testAsyncBlockAfterDelay {
-  GCDSemaphore *semaphore = [GCDSemaphore semaphore];
-  GCDQueue *queue = [GCDQueue queue];
+  GCDSemaphore *semaphore = [GCDSemaphore new];
+  GCDQueue *queue = [GCDQueue new];
   __block int val = 0;
   
   [queue asyncBlock:^{
@@ -55,30 +55,30 @@
     [semaphore signal];
   } afterDelay:0.5];
   
-  STAssertEquals(val, 0, nil);
+  XCTAssertEqual(val, 0);
   [semaphore wait];
-  STAssertEquals(val, 1, nil);
+  XCTAssertEqual(val, 1);
 }
 
 - (void)testAsyncBlockInGroup {
-  GCDQueue *queue = [GCDQueue queue];
-  GCDGroup *group = [GCDGroup group];
+  GCDQueue *queue = [GCDQueue new];
+  GCDGroup *group = [GCDGroup new];
   __block int val = 0;
   
   [queue asyncBlock:^{ ++val; } inGroup:group];
   [queue asyncBlock:^{ ++val; } inGroup:group];
   
   [group wait];
-  STAssertEquals(val, 2, nil);
+  XCTAssertEqual(val, 2);
 }
 
 - (void)testSyncBlock {
-  GCDQueue *queue = [GCDQueue queue];
+  GCDQueue *queue = [GCDQueue new];
   __block int val = 0;
   
   [queue syncBlock:^{ ++val; }];
     
-  STAssertEquals(val, 1, nil);
+  XCTAssertEqual(val, 1);
 }
 
 - (void)testSyncBlockOnCurrentQueue {
@@ -87,37 +87,8 @@
   
   [queue syncBlock:^{ ++val; }];
   
-  STAssertTrue([queue isCurrentQueue], nil);
-  STAssertEquals(val, 1, nil);
-}
-
-static void syncFunction(void *context) {
-  ++(*(int *)context);
-}
-
-- (void)testSyncFunction {
-  GCDQueue *queue = [GCDQueue queue];
-  __block int val = 0;
-  
-  [queue syncFunction:syncFunction withContext:&val];
-  
-  STAssertEquals(val, 1, nil);
-}
-
-- (void)testSyncFunctionOnCurrentQueue {
-  GCDQueue *queue = [GCDQueue mainQueue];
-  __block int val = 0;
-  
-  [queue syncFunction:syncFunction withContext:&val];
-  
-  STAssertTrue([queue isCurrentQueue], nil);
-  STAssertEquals(val, 1, nil);
-}
-
-- (void)testLabel {
-  GCDQueue *queue = [[GCDQueue alloc] initSerialWithLabel:@"testLabel"];
-  
-  STAssertEqualObjects(queue.label, @"testLabel", nil);
+  XCTAssertTrue([queue isCurrentQueue]);
+  XCTAssertEqual(val, 1);
 }
 
 @end

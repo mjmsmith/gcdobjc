@@ -5,9 +5,6 @@
 //  Copyright (c) 2012 Mark Smith. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <dispatch/dispatch.h>
-
 #import "GCDObject.h"
 
 @class GCDGroup;
@@ -23,13 +20,8 @@
 + (GCDQueue *)backgroundPriorityGlobalQueue;
 + (GCDQueue *)currentQueue;
 
-+ (GCDQueue *) queue;
-
-- (id)initSerial;
-- (id)initSerialWithLabel:(NSString *)label;
-- (id)initConcurrent;
-- (id)initConcurrentWithLabel:(NSString *)label;
-- (id)initWithLabel:(NSString *)label attr:(dispatch_queue_attr_t)attr;
+- (instancetype)initSerial;
+- (instancetype)initConcurrent;
 
 - (void)asyncBlock:(dispatch_block_t)block;
 - (void)asyncBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group;
@@ -43,26 +35,9 @@
 
 - (void)syncBarrierBlock:(dispatch_block_t)block;
 
-- (void)asyncFunction:(dispatch_function_t)function withContext:(void *)context;
-- (void)asyncFunction:(dispatch_function_t)function withContext:(void *)context inGroup:(GCDGroup *)group;
-- (void)asyncFunction:(dispatch_function_t)function withContext:(void *)context afterDelay:(double)seconds;
-
-- (void)asyncBarrierFunction:(dispatch_function_t)function withContext:(void *)context;
-- (void)asyncNotifyFunction:(dispatch_function_t)function withContext:(void *)context inGroup:(GCDGroup *)group;
-
-- (void)syncFunction:(dispatch_function_t)function withContext:(void *)context;
-- (void)syncFunction:(void (*)(void *, size_t))function withContext:(void *)context count:(size_t)count;
-
-- (void)syncBarrierFunction:(dispatch_function_t)function withContext:(void *)context;
-
 - (BOOL)isCurrentQueue;
 
 - (void)suspend;
 - (void)resume;
-
-- (NSString *)label;
-
-- (void)setContext:(void *)context forKey:(const void *)key destructor:(dispatch_function_t)destructor;
-- (void *)contextForKey:(const void *)key;
 
 @end

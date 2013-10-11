@@ -14,7 +14,6 @@
 		4D06C1D4158EDF9F00CBC711 /* GCDSemaphore.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D930E69158D728B009538FB /* GCDSemaphore.m */; };
 		4D06C1D6158EDFA300CBC711 /* GCDGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D930E64158D71F7009538FB /* GCDGroup.m */; };
 		4D6F601C158414F70023150C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6F601B158414F70023150C /* Foundation.framework */; };
-		4D6F602A158414F70023150C /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6F6029158414F70023150C /* SenTestingKit.framework */; };
 		4D6F602D158414F70023150C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6F601B158414F70023150C /* Foundation.framework */; };
 		4D6F6030158414F70023150C /* libGCDObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6F6018158414F70023150C /* libGCDObjC.a */; };
 		4D6F6036158414F70023150C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D6F6034158414F70023150C /* InfoPlist.strings */; };
@@ -45,8 +44,7 @@
 		4D06C16D158EB92200CBC711 /* GCDObjC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDObjC.h; sourceTree = "<group>"; };
 		4D6F6018158414F70023150C /* libGCDObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGCDObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D6F601B158414F70023150C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		4D6F6028158414F70023150C /* GCDObjCTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GCDObjCTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		4D6F6029158414F70023150C /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		4D6F6028158414F70023150C /* GCDObjCTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GCDObjCTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D6F6033158414F70023150C /* GCDObjCTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GCDObjCTests-Info.plist"; sourceTree = "<group>"; };
 		4D6F6035158414F70023150C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4D6F6038158414F70023150C /* GCDQueueTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GCDQueueTests.m; sourceTree = "<group>"; };
@@ -72,7 +70,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D6F602A158414F70023150C /* SenTestingKit.framework in Frameworks */,
 				4D6F602D158414F70023150C /* Foundation.framework in Frameworks */,
 				4D6F6030158414F70023150C /* libGCDObjC.a in Frameworks */,
 			);
@@ -95,7 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				4D6F6018158414F70023150C /* libGCDObjC.a */,
-				4D6F6028158414F70023150C /* GCDObjCTests.octest */,
+				4D6F6028158414F70023150C /* GCDObjCTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -104,7 +101,6 @@
 			isa = PBXGroup;
 			children = (
 				4D6F601B158414F70023150C /* Foundation.framework */,
-				4D6F6029158414F70023150C /* SenTestingKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -195,8 +191,8 @@
 			);
 			name = GCDObjCTests;
 			productName = GCDObjCTests;
-			productReference = 4D6F6028158414F70023150C /* GCDObjCTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productReference = 4D6F6028158414F70023150C /* GCDObjCTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -204,7 +200,7 @@
 		4D6F600F158414F60023150C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0500;
 			};
 			buildConfigurationList = 4D6F6012158414F60023150C /* Build configuration list for PBXProject "GCDObjC" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -302,8 +298,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -314,10 +315,14 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -326,13 +331,21 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				SDKROOT = iphoneos;
@@ -367,28 +380,20 @@
 		4D6F6040158414F70023150C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(SDKROOT)/Developer/Library/Frameworks";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "GCDObjCTests/GCDObjCTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
 		4D6F6041158414F70023150C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(SDKROOT)/Developer/Library/Frameworks";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "GCDObjCTests/GCDObjCTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};

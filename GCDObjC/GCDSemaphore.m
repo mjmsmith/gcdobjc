@@ -14,15 +14,11 @@
 
 #pragma mark Lifecycle.
 
-+ (GCDSemaphore *)semaphore {
-  return [[self alloc] init];
-}
-
-- (id)init {
+- (instancetype)init {
   return [self initWithValue:0];
 }
 
-- (id)initWithValue:(long)value {
+- (instancetype)initWithValue:(long)value {
   return [super initWithDispatchObject:dispatch_semaphore_create(value)];
 }
 
