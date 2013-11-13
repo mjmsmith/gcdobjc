@@ -53,6 +53,7 @@
 		4D930E64158D71F7009538FB /* GCDGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDGroup.m; sourceTree = "<group>"; };
 		4D930E68158D728B009538FB /* GCDSemaphore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDSemaphore.h; sourceTree = "<group>"; };
 		4D930E69158D728B009538FB /* GCDSemaphore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDSemaphore.m; sourceTree = "<group>"; };
+		4DCE43901833EC2A009180F4 /* GCDObjC.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = GCDObjC.podspec; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +132,7 @@
 		4D6F6032158414F70023150C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4DCE43901833EC2A009180F4 /* GCDObjC.podspec */,
 				4D6F6033158414F70023150C /* GCDObjCTests-Info.plist */,
 				4D6F6034158414F70023150C /* InfoPlist.strings */,
 			);
