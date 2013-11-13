@@ -8,17 +8,17 @@
 #import "GCDGroup.h"
 #import "GCDQueue.h"
 
-@interface GCDQueue ()
-- (instancetype)initWithDispatchQueue:(dispatch_queue_t)dispatchQueue;
-@end
-
-@implementation GCDQueue
-
 static GCDQueue *mainQueue;
 static GCDQueue *globalQueue;
 static GCDQueue *highPriorityGlobalQueue;
 static GCDQueue *lowPriorityGlobalQueue;
 static GCDQueue *backgroundPriorityGlobalQueue;
+
+@interface GCDQueue ()
+- (instancetype)initWithDispatchQueue:(dispatch_queue_t)dispatchQueue;
+@end
+
+@implementation GCDQueue
 
 #pragma mark Global queue accessors.
 
@@ -63,11 +63,11 @@ static GCDQueue *backgroundPriorityGlobalQueue;
 }
 
 - (instancetype)initSerial {
-  return [super initWithDispatchObject:dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)];
+  return [self initWithDispatchQueue:dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)];
 }
 
 - (instancetype)initConcurrent {
-  return [super initWithDispatchObject:dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)];
+  return [self initWithDispatchQueue:dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)];
 }
 
 - (instancetype)initWithDispatchQueue:(dispatch_queue_t)dispatchQueue {
@@ -76,48 +76,35 @@ static GCDQueue *backgroundPriorityGlobalQueue;
 
 #pragma mark Public block methods.
 
-- (void)asyncBlock:(dispatch_block_t)block {
+- (void)queueBlock:(dispatch_block_t)block {
   dispatch_async(self.dispatchQueue, block);
 }
 
-- (void)asyncBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group {
-  dispatch_group_async(group.dispatchGroup, self.dispatchQueue, block);
-}
-
-- (void)asyncBlock:(dispatch_block_t)block afterDelay:(double)seconds {
+- (void)queueBlock:(dispatch_block_t)block afterDelay:(double)seconds {
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC)), self.dispatchQueue, block);
 }
 
-- (void)asyncBarrierBlock:(dispatch_block_t)block {
-  dispatch_barrier_async(self.dispatchQueue, block);
+- (void)queueAndAwaitBlock:(dispatch_block_t)block {
+  dispatch_sync(self.dispatchQueue, block);
 }
 
-- (void)asyncNotifyBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group {
+- (void)queueAndAwaitBlock:(void (^)(size_t))block iterationCount:(size_t)count {
+  dispatch_apply(count, self.dispatchQueue, block);
+}
+
+- (void)queueBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group {
+  dispatch_group_async(group.dispatchGroup, self.dispatchQueue, block);
+}
+
+- (void)queueNotifyBlock:(dispatch_block_t)block forGroup:(GCDGroup *)group {
   dispatch_group_notify(group.dispatchGroup, self.dispatchQueue, block);
 }
 
-- (void)syncBlock:(dispatch_block_t)block {
-  if ([self isCurrentQueue]) {
-    block();
-  }
-  else {
-    dispatch_sync(self.dispatchQueue, block);
-  }
+- (void)queueBarrierBlock:(dispatch_block_t)block {
+  dispatch_barrier_async(self.dispatchQueue, block);
 }
 
-- (void)syncBlock:(void (^)(size_t))block count:(size_t)count {
-  if ([self isCurrentQueue]) {
-    for (int i = 0; i < count; ++i) {
-      block(i);
-    }
-  }
-  else {
-    dispatch_apply(count, self.dispatchQueue, block);
-  }
-}
-
-- (void)syncBarrierBlock:(dispatch_block_t)block {
-  // TODO How to deal with attempted dispatch on the current queue?
+- (void)queueAndAwaitBarrierBlock:(dispatch_block_t)block {
   dispatch_barrier_sync(self.dispatchQueue, block);
 }
 

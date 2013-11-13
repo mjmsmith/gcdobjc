@@ -30,27 +30,27 @@
   XCTAssertEqual([GCDQueue currentQueue].dispatchQueue, dispatch_get_current_queue());
 }
 
-- (void)testAsyncBlock {
+- (void)testQueueBlock {
   GCDSemaphore *semaphore = [GCDSemaphore new];
   GCDQueue *queue = [GCDQueue new];
   __block int val = 0;
   
-  [queue asyncBlock:^{
+  [queue queueBlock:^{
     ++val;
     [semaphore signal];
   }];
   
+  XCTAssertEqual(val, 0);
   [semaphore wait];
-
   XCTAssertEqual(val, 1);
 }
 
-- (void)testAsyncBlockAfterDelay {
+- (void)testQueueBlockAfterDelay {
   GCDSemaphore *semaphore = [GCDSemaphore new];
   GCDQueue *queue = [GCDQueue new];
   __block int val = 0;
   
-  [queue asyncBlock:^{
+  [queue queueBlock:^{
     ++val; 
     [semaphore signal];
   } afterDelay:0.5];
@@ -60,34 +60,25 @@
   XCTAssertEqual(val, 1);
 }
 
-- (void)testAsyncBlockInGroup {
+- (void)testQueueBlockInGroup {
   GCDQueue *queue = [GCDQueue new];
   GCDGroup *group = [GCDGroup new];
   __block int val = 0;
   
-  [queue asyncBlock:^{ ++val; } inGroup:group];
-  [queue asyncBlock:^{ ++val; } inGroup:group];
+  [queue queueBlock:^{ ++val; } inGroup:group];
+  [queue queueBlock:^{ ++val; } inGroup:group];
   
+  XCTAssertEqual(val, 0);
   [group wait];
   XCTAssertEqual(val, 2);
 }
 
-- (void)testSyncBlock {
+- (void)testQueueAndAwaitBlock {
   GCDQueue *queue = [GCDQueue new];
   __block int val = 0;
   
-  [queue syncBlock:^{ ++val; }];
+  [queue queueAndAwaitBlock:^{ ++val; }];
     
-  XCTAssertEqual(val, 1);
-}
-
-- (void)testSyncBlockOnCurrentQueue {
-  GCDQueue *queue = [GCDQueue mainQueue];
-  __block int val = 0;
-  
-  [queue syncBlock:^{ ++val; }];
-  
-  XCTAssertTrue([queue isCurrentQueue]);
   XCTAssertEqual(val, 1);
 }
 

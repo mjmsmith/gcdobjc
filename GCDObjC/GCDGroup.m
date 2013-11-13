@@ -15,7 +15,11 @@
 #pragma mark Lifecycle.
 
 - (instancetype)init {
-  return [super initWithDispatchObject:dispatch_group_create()];
+  return [self initWithDispatchGroup:dispatch_group_create()];
+}
+
+- (instancetype)initWithDispatchGroup:(dispatch_group_t)dispatchGroup {
+  return [super initWithDispatchObject:dispatchGroup];
 }
 
 #pragma mark Public methods.
@@ -28,17 +32,16 @@
   dispatch_group_leave(self.dispatchGroup);
 }
 
-- (long)wait {
-  return dispatch_group_wait(self.dispatchGroup, DISPATCH_TIME_FOREVER);
+- (void)wait {
+  dispatch_group_wait(self.dispatchGroup, DISPATCH_TIME_FOREVER);
 }
 
-- (long)wait:(double)seconds {
-  return dispatch_group_wait(self.dispatchGroup, dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC)));
+- (BOOL)wait:(double)seconds {
+  return dispatch_group_wait(self.dispatchGroup, dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC))) == 0;
 }
 
 - (dispatch_group_t)dispatchGroup {
   return self.dispatchObject._dg;
 }
-
 
 @end

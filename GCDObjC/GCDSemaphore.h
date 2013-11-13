@@ -9,13 +9,60 @@
 
 @interface GCDSemaphore : GCDObject
 
+/**
+ *  Returns the underlying dispatch semaphore object.
+ *  @return The dispatch semaphore object.
+ */
 @property (assign, readonly, nonatomic) dispatch_semaphore_t dispatchSemaphore;
 
+/**
+ *  Initializes a new semaphore with starting value 0.
+ *
+ *  @return The initialized semaphore instance.
+ *  @see dispatch_semaphore_create()
+ */
 - (instancetype)init;
+
+/**
+ *  Initializes a new semaphore.
+ *
+ *  @param value The starting value for the semaphore.
+ *  @return The initialized semaphore instance.
+ *  @see dispatch_semaphore_create()
+ */
 - (instancetype)initWithValue:(long)value;
 
-- (long)signal;
-- (long)wait;
-- (long)wait:(double)seconds;
+/**
+ *  The GCDSemaphore designated initializer.
+ *
+ *  @param dispatchSemaphore A dispatch_semaphore_t object.
+ *  @return The initialized instance. The GCDSemaphore object takes ownership of the underlying dispatch semaphore.
+ *  @see dispatch_semaphore_create()
+ */
+- (instancetype)initWithDispatchSemaphore:(dispatch_semaphore_t)dispatchSemaphore;
+
+/**
+ *  Signals (increments) the semaphore.
+ *
+ *  @return YES if a thread is awoken, NO otherwise.
+ *  @see dispatch_semaphore_signal()
+ */
+- (BOOL)signal;
+
+/**
+ *  Waits forever for (decrements) the semaphore.
+ *
+ *  @see dispatch_semaphore_wait()
+ */
+- (void)wait;
+
+/**
+ *  Waits for (decrements) the semaphore.
+ *
+ *  @param seconds The time to wait in seconds.
+ *  @return YES on success, NO if the timeout occurred.
+ *  @see dispatch_semaphore_wait()
+ */
+- (BOOL)wait:(double)seconds;
 
 @end

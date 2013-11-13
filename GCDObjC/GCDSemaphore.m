@@ -19,21 +19,25 @@
 }
 
 - (instancetype)initWithValue:(long)value {
-  return [super initWithDispatchObject:dispatch_semaphore_create(value)];
+  return [self initWithDispatchSemaphore:dispatch_semaphore_create(value)];
+}
+
+- (instancetype)initWithDispatchSemaphore:(dispatch_semaphore_t)dispatchSemaphore {
+  return [super initWithDispatchObject:dispatchSemaphore];
 }
 
 #pragma mark Public methods.
 
-- (long)signal {
-  return dispatch_semaphore_signal(self.dispatchSemaphore);
+- (BOOL)signal {
+  return dispatch_semaphore_signal(self.dispatchSemaphore) != 0;
 }
 
-- (long)wait {
-  return dispatch_semaphore_wait(self.dispatchSemaphore, DISPATCH_TIME_FOREVER);
+- (void)wait {
+  dispatch_semaphore_wait(self.dispatchSemaphore, DISPATCH_TIME_FOREVER);
 }
 
-- (long)wait:(double)seconds {
-  return dispatch_semaphore_wait(self.dispatchSemaphore, dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC)));
+- (BOOL)wait:(double)seconds {
+  return dispatch_semaphore_wait(self.dispatchSemaphore, dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC))) == 0;
 }
 
 - (dispatch_semaphore_t)dispatchSemaphore {

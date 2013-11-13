@@ -9,13 +9,56 @@
 
 @interface GCDGroup : GCDObject
 
+/**
+ *  Returns the underlying dispatch group object.
+ *  @return The dispatch group object.
+ */
 @property (assign, readonly, nonatomic) dispatch_group_t dispatchGroup;
 
+/**
+ *  Initializes a new group.
+ *
+ *  @return The initialized group instance.
+ *  @see dispatch_group_create()
+ */
 - (instancetype)init;
 
+/**
+ *  The GCDGroup designated initializer.
+ *
+ *  @param dispatchGroup A dispatch_group_t object.
+ *  @return The initialized instance. The GCDGroup object takes ownership of the underlying dispatch group.
+ */
+- (instancetype)initWithDispatchGroup:(dispatch_group_t)dispatchGroup;
+
+/**
+ *  Explicitly indicates that a block has entered the group.
+ *
+ *  @see dispatch_group_enter()
+ */
 - (void)enter;
+
+/**
+ *  Explicitly indicates that a block in the group has completed.
+ *
+ *  @see dispatch_group_leave()
+ */
 - (void)leave;
-- (long)wait;
-- (long)wait:(double)seconds;
+
+/**
+ *  Waits forever for the previously submitted blocks in the group to complete.
+ *
+ *  @see dispatch_group_wait().
+ */
+- (void)wait;
+
+/**
+ *  Waits for the previously submitted blocks in the group to complete.
+ *
+ *  @param seconds The time to wait in seconds.
+ *  @return YES if all blocks completed, NO if the timeout occurred.
+ *  @see dispatch_group_wait().
+ */
+- (BOOL)wait:(double)seconds;
 
 @end

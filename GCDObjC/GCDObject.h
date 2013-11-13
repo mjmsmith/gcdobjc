@@ -12,10 +12,6 @@
 
 @property (assign, readonly, nonatomic) dispatch_object_t dispatchObject;
 
-+ (void)syncBlock:(dispatch_block_t)block once:(dispatch_once_t *)once;
-
 - (instancetype)initWithDispatchObject:(dispatch_object_t)dispatchObject;
-
-- (void)logDebugWithMessage:(NSString *)message;
 
 @end
