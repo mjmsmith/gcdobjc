@@ -40,7 +40,6 @@
     [semaphore signal];
   }];
   
-  XCTAssertEqual(val, 0);
   [semaphore wait];
   XCTAssertEqual(val, 1);
 }
@@ -48,6 +47,7 @@
 - (void)testQueueBlockAfterDelay {
   GCDSemaphore *semaphore = [GCDSemaphore new];
   GCDQueue *queue = [GCDQueue new];
+  NSDate *then = [NSDate new];
   __block int val = 0;
   
   [queue queueBlock:^{
@@ -58,6 +58,28 @@
   XCTAssertEqual(val, 0);
   [semaphore wait];
   XCTAssertEqual(val, 1);
+
+  NSDate *now = [NSDate new];
+  XCTAssertTrue([now timeIntervalSinceDate:then] > 0.4);
+  XCTAssertTrue([now timeIntervalSinceDate:then] < 0.6);
+}
+
+- (void)testQueueAndAwaitBlock {
+  GCDQueue *queue = [GCDQueue new];
+  __block int val = 0;
+  
+  [queue queueAndAwaitBlock:^{ ++val; }];
+  
+  XCTAssertEqual(val, 1);
+}
+
+- (void)testQueueAndAwaitBlockIterationCount {
+  GCDQueue *queue = [GCDQueue new];
+  __block int val = 0;
+  
+  [queue queueAndAwaitBlock:^(size_t i){ ++val; } iterationCount:10];
+  
+  XCTAssertEqual(val, 10);
 }
 
 - (void)testQueueBlockInGroup {
@@ -73,13 +95,47 @@
   XCTAssertEqual(val, 2);
 }
 
-- (void)testQueueAndAwaitBlock {
+- (void)testQueueNotifyBlockForGroup {
+  GCDQueue *queue = [GCDQueue new];
+  GCDGroup *group = [GCDGroup new];
+  GCDSemaphore *semaphore = [GCDSemaphore new];
+  __block int val = 0;
+  
+  [queue queueBlock:^{ val += 1; } inGroup:group];
+  [queue queueBlock:^{ val += 2; } inGroup:group];
+  [queue queueNotifyBlock:^{ [semaphore signal]; } forGroup:group];
+  
+  [semaphore wait];
+  XCTAssertEqual(val, 3);
+}
+
+- (void)testQueueBarrierBlock {
+  GCDQueue *queue = [GCDQueue new];
+  __block int val = 0;
+  __block int barrierVal = 0;
+
+  for (int i = 0; i < 10; ++i) {
+    [queue queueBlock:^{ ++val; }];
+  }
+  [queue queueBarrierBlock:^{ barrierVal = val; }];
+  for (int i = 0; i < 10; ++i) {
+    [queue queueBlock:^{ ++val; }];
+  }
+
+  [queue queueAndAwaitBlock:^{}];
+  XCTAssertEqual(barrierVal, 10);
+  XCTAssertEqual(val, 20);
+}
+
+- (void)testQueueAndAwaitBarrierBlock {
   GCDQueue *queue = [GCDQueue new];
   __block int val = 0;
   
-  [queue queueAndAwaitBlock:^{ ++val; }];
-    
-  XCTAssertEqual(val, 1);
+  for (int i = 0; i < 10; ++i) {
+    [queue queueBlock:^{ ++val; }];
+  }
+  [queue queueAndAwaitBarrierBlock:^{}];
+  XCTAssertEqual(val, 10);
 }
 
 @end
