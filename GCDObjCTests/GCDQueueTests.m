@@ -138,4 +138,25 @@
   XCTAssertEqual(val, 10);
 }
 
+static int onceVal;
+- (void)onceBlock {
+  GCDExecOnce(^{ ++onceVal; });
+}
+- (void)testExecOnce {
+  onceVal = 0;
+  for (int i = 0; i < 10; ++i) {
+    [self onceBlock];
+  }
+  
+  XCTAssertEqual(onceVal, 1);
+}
+
++ (instancetype)theTestInstance {
+  GCDSharedInstance(^{ return [[self class] new]; });
+}
+- (void)testSharedInstance {
+  XCTAssertTrue([[GCDQueueTests theTestInstance] class] == [self class]);
+  XCTAssertEqual([GCDQueueTests theTestInstance], [GCDQueueTests theTestInstance]);
+}
+
 @end
