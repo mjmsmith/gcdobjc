@@ -3,11 +3,17 @@
 GCDObjC is an Objective-C wrapper for the most commonly used features of Grand Central Dispatch.  It has four main aims:
 
 * Organize the flat C API into appropriate classes.
-* Use more natural arguments, such as time intervals rather than absolute times.
+* Use more convenient arguments, such as NSTimeIntervals.
 * Split single functions into multiple intent-revealing methods. 
 * Add convenience methods.
 
-In all classes, the associated __dispatch_object_t__ object is created in the init method and released in the dealloc method.
+All classes are included in the header file __GCDObjC.h__.
+
+```
+#import "GCDObjC.h"
+```
+
+In all classes, the associated __dispatch_object_t__ object is created in the __init__ methods and released in the __dealloc__ method.
 
 ### GCDQueue
 
@@ -69,7 +75,7 @@ Most of the functionality is implemented in the __GCDQueue__ class.
 
 ### GCDSemaphore
 
-Semaphores are supported through the __GCDSemaphore__ class.
+Semaphores are implemented in the __GCDSemaphore__ class.
 
 * creating semaphores
 
@@ -88,7 +94,7 @@ Semaphores are supported through the __GCDSemaphore__ class.
 
 ### GCDGroup
 
-Groups are supported through the __GCDGroup__ class.
+Groups are implemented in the __GCDGroup__ class.
 
 * creating groups
 
@@ -114,16 +120,18 @@ Groups are supported through the __GCDGroup__ class.
 
 Two macros are provided for wrapping __dispatch_once()__ calls.
 
-* __GCDExecOnce()__: executing a block once
+* executing a block only once: __GCDExecOnce(block)__
 
 ```
 GCDExecOnce(^{ NSLog(@"This will only be logged once."); });
 ```
 
-* __GCDSharedInstance()__: creating a singleton instance of a class
+* creating a singleton instance of a class: __GCDSharedInstance(block)__
 
 ```
 + (instancetype)sharedInstance {
   GCDSharedInstance(^{ return [[self class] new]; });
 }
 ```
+
+The block supplied to __GCDSharedInstance()__ must return an instance of the desired class.
