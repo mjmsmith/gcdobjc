@@ -8,6 +8,7 @@
 #import "GCDGroup.h"
 
 @interface GCDGroup ()
+@property (strong, readwrite, nonatomic) dispatch_group_t dispatchGroup;
 @end
 
 @implementation GCDGroup
@@ -19,7 +20,11 @@
 }
 
 - (instancetype)initWithDispatchGroup:(dispatch_group_t)dispatchGroup {
-  return [super initWithDispatchObject:dispatchGroup];
+  if ((self = [super init]) != nil) {
+    self.dispatchGroup = dispatchGroup;
+  }
+  
+  return self;
 }
 
 #pragma mark Public methods.
@@ -38,10 +43,6 @@
 
 - (BOOL)wait:(double)seconds {
   return dispatch_group_wait(self.dispatchGroup, dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC))) == 0;
-}
-
-- (dispatch_group_t)dispatchGroup {
-  return self.dispatchObject._dg;
 }
 
 @end

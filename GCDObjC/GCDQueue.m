@@ -15,7 +15,7 @@ static GCDQueue *lowPriorityGlobalQueue;
 static GCDQueue *backgroundPriorityGlobalQueue;
 
 @interface GCDQueue ()
-- (instancetype)initWithDispatchQueue:(dispatch_queue_t)dispatchQueue;
+@property (strong, readwrite, nonatomic) dispatch_queue_t dispatchQueue;
 @end
 
 @implementation GCDQueue
@@ -40,10 +40,6 @@ static GCDQueue *backgroundPriorityGlobalQueue;
 
 + (GCDQueue *)backgroundPriorityGlobalQueue {
   return backgroundPriorityGlobalQueue;
-}
-
-+ (GCDQueue *)currentQueue {
-  return [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_current_queue()];
 }
 
 #pragma mark Lifecycle.
@@ -71,7 +67,11 @@ static GCDQueue *backgroundPriorityGlobalQueue;
 }
 
 - (instancetype)initWithDispatchQueue:(dispatch_queue_t)dispatchQueue {
-  return [super initWithDispatchObject:dispatchQueue];
+  if ((self = [super init]) != nil) {
+    self.dispatchQueue = dispatchQueue;
+  }
+  
+  return self;
 }
 
 #pragma mark Public block methods.
@@ -96,7 +96,7 @@ static GCDQueue *backgroundPriorityGlobalQueue;
   dispatch_group_async(group.dispatchGroup, self.dispatchQueue, block);
 }
 
-- (void)queueNotifyBlock:(dispatch_block_t)block forGroup:(GCDGroup *)group {
+- (void)queueNotifyBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group {
   dispatch_group_notify(group.dispatchGroup, self.dispatchQueue, block);
 }
 
@@ -110,20 +110,12 @@ static GCDQueue *backgroundPriorityGlobalQueue;
 
 #pragma mark Misc public methods.
 
-- (BOOL)isCurrentQueue {
-  return self.dispatchQueue == dispatch_get_current_queue();
-}
-
 - (void)suspend {
   dispatch_suspend(self.dispatchQueue);
 }
 
 - (void)resume {
   dispatch_resume(self.dispatchQueue);
-}
-
-- (dispatch_queue_t)dispatchQueue {
-  return self.dispatchObject._dq;
 }
 
 @end

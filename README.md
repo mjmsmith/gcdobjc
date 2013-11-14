@@ -4,18 +4,18 @@ GCDObjC is an Objective-C wrapper for the most commonly used features of Grand C
 
 * Organize the flat C API into appropriate classes.
 * Use more convenient arguments, such as NSTimeIntervals.
-* Split single functions into multiple intent-revealing methods. 
+* Split single functions into multiple intent-revealing methods.
 * Add convenience methods.
 
-All classes are included in the header file __GCDObjC.h__.
+## Usage
 
-```
-#import "GCDObjC.h"
-```
+__GCDObjC__ requires ARC and iOS 6.0.  (Prior to 6.0, dispatch objects were not considered Objective-C objects, and therefore required manual memory management.)
 
-In all classes, the associated __dispatch_object_t__ object is created in the __init__ methods and released in the __dealloc__ method.
+__GCDObjC.h__ is the only header file that needs to be imported.
 
-### GCDQueue
+For usage examples, see [GCDObjCTests.m](https://github.com/mjmsmith/gcdobjc/blob/master/GCDObjCTests/GCDQueueTests.m).
+
+## GCDQueue
 
 Most of the functionality is implemented in the __GCDQueue__ class.
 
@@ -27,8 +27,6 @@ Most of the functionality is implemented in the __GCDQueue__ class.
 + (GCDQueue *)highPriorityGlobalQueue;
 + (GCDQueue *)lowPriorityGlobalQueue;
 + (GCDQueue *)backgroundPriorityGlobalQueue;
-+ (GCDQueue *)currentQueue;
-- (BOOL)isCurrentQueue;
 ```
 
 * creating serial and concurrent queues
@@ -73,7 +71,7 @@ Most of the functionality is implemented in the __GCDQueue__ class.
 - (void)resume;
 ```
 
-### GCDSemaphore
+## GCDSemaphore
 
 Semaphores are implemented in the __GCDSemaphore__ class.
 
@@ -92,7 +90,7 @@ Semaphores are implemented in the __GCDSemaphore__ class.
 - (BOOL)wait:(double)seconds;
 ```
 
-### GCDGroup
+## GCDGroup
 
 Groups are implemented in the __GCDGroup__ class.
 
@@ -116,7 +114,7 @@ Groups are implemented in the __GCDGroup__ class.
 - (BOOL)wait:(double)seconds;
 ```
 
-### Macros
+## Macros
 
 Two macros are provided for wrapping __dispatch_once()__ calls.
 

@@ -8,6 +8,7 @@
 #import "GCDSemaphore.h"
 
 @interface GCDSemaphore ()
+@property (strong, readwrite, nonatomic) dispatch_semaphore_t dispatchSemaphore;
 @end
 
 @implementation GCDSemaphore
@@ -23,7 +24,11 @@
 }
 
 - (instancetype)initWithDispatchSemaphore:(dispatch_semaphore_t)dispatchSemaphore {
-  return [super initWithDispatchObject:dispatchSemaphore];
+  if ((self = [super init]) != nil) {
+    self.dispatchSemaphore = dispatchSemaphore;
+  }
+  
+  return self;
 }
 
 #pragma mark Public methods.
@@ -38,10 +43,6 @@
 
 - (BOOL)wait:(double)seconds {
   return dispatch_semaphore_wait(self.dispatchSemaphore, dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC))) == 0;
-}
-
-- (dispatch_semaphore_t)dispatchSemaphore {
-  return self.dispatchObject._dsema;
 }
 
 @end

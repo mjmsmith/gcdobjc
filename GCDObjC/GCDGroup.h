@@ -5,15 +5,15 @@
 //  Copyright (c) 2012 Mark Smith. All rights reserved.
 //
 
-#import "GCDObject.h"
+#import <Foundation/Foundation.h>
 
-@interface GCDGroup : GCDObject
+@interface GCDGroup : NSObject
 
 /**
  *  Returns the underlying dispatch group object.
  *  @return The dispatch group object.
  */
-@property (assign, readonly, nonatomic) dispatch_group_t dispatchGroup;
+@property (strong, readonly, nonatomic) dispatch_group_t dispatchGroup;
 
 /**
  *  Initializes a new group.
@@ -27,7 +27,7 @@
  *  The GCDGroup designated initializer.
  *
  *  @param dispatchGroup A dispatch_group_t object.
- *  @return The initialized instance. The GCDGroup object takes ownership of the underlying dispatch group.
+ *  @return The initialized instance.
  */
 - (instancetype)initWithDispatchGroup:(dispatch_group_t)dispatchGroup;
 

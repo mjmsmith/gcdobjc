@@ -5,17 +5,17 @@
 //  Copyright (c) 2012 Mark Smith. All rights reserved.
 //
 
-#import "GCDObject.h"
+#import <Foundation/Foundation.h>
 
 @class GCDGroup;
 
-@interface GCDQueue : GCDObject
+@interface GCDQueue : NSObject
 
 /**
  *  Returns the underlying dispatch queue object.
  *  @return The dispatch queue object.
  */
-@property (assign, readonly, nonatomic) dispatch_queue_t dispatchQueue;
+@property (strong, readonly, nonatomic) dispatch_queue_t dispatchQueue;
 
 /**
  *  Returns the serial dispatch queue associated with the application’s main thread.
@@ -58,14 +58,6 @@
 + (GCDQueue *)backgroundPriorityGlobalQueue;
 
 /**
- *  Returns the queue on which the currently executing block is running.
- *
- *  @return The queue.
- *  @see dispatch_get_current_queue()
- */
-+ (GCDQueue *)currentQueue;
-
-/**
  *  Initializes a new serial queue.
  *
  *  @return The initialized serial queue instance.
@@ -93,7 +85,7 @@
  *  The GCDQueue designated initializer.
  *
  *  @param dispatchQueue A dispatch_queue_t object.
- *  @return The initialized instance. The GCDQueue object takes ownership of the underlying dispatch queue.
+ *  @return The initialized instance.
  */
 - (instancetype)initWithDispatchQueue:(dispatch_queue_t)dispatchQueue;
 
@@ -147,7 +139,7 @@
  *  @param forGroup The group to observe.
  *  @see dispatch_group_notify()
  */
-- (void)queueNotifyBlock:(dispatch_block_t)block forGroup:(GCDGroup *)group;
+- (void)queueNotifyBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group;
 
 /**
  *  Submits a barrier block for asynchronous execution on the queue.
@@ -164,14 +156,6 @@
  *  @see dispatch_barrier_sync()
  */
 - (void)queueAndAwaitBarrierBlock:(dispatch_block_t)block;
-
-/**
- *  Returns whether the queue is the current queue.
- *
- *  @return YES if it is the current queue, NO otherwise.
- *  @see dispatch_get_current_queue()
- */
-- (BOOL)isCurrentQueue;
 
 /**
  *  Suspends execution of blocks on the queue.

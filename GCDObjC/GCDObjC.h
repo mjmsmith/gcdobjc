@@ -7,7 +7,6 @@
 
 #import "GCDMacros.h"
 
-#import "GCDObject.h"
 #import "GCDGroup.h"
 #import "GCDQueue.h"
 #import "GCDSemaphore.h"

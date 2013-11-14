@@ -7,6 +7,7 @@
 
 #import <XCTest/XCTest.h>
 #import <dispatch/dispatch.h>
+#import <libkern/OSAtomic.h>
 
 #import "GCDObjC.h"
 
@@ -26,17 +27,13 @@
   XCTAssertEqual([GCDQueue backgroundPriorityGlobalQueue].dispatchQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0));
 }
 
-- (void)testCurrentQueue {
-  XCTAssertEqual([GCDQueue currentQueue].dispatchQueue, dispatch_get_current_queue());
-}
-
 - (void)testQueueBlock {
   GCDSemaphore *semaphore = [GCDSemaphore new];
   GCDQueue *queue = [GCDQueue new];
-  __block int val = 0;
+  __block int32_t val = 0;
   
   [queue queueBlock:^{
-    ++val;
+    OSAtomicIncrement32(&val);
     [semaphore signal];
   }];
   
@@ -48,10 +45,10 @@
   GCDSemaphore *semaphore = [GCDSemaphore new];
   GCDQueue *queue = [GCDQueue new];
   NSDate *then = [NSDate new];
-  __block int val = 0;
+  __block int32_t val = 0;
   
   [queue queueBlock:^{
-    ++val; 
+    OSAtomicIncrement32(&val);
     [semaphore signal];
   } afterDelay:0.5];
   
@@ -66,85 +63,89 @@
 
 - (void)testQueueAndAwaitBlock {
   GCDQueue *queue = [GCDQueue new];
-  __block int val = 0;
+  __block int32_t val = 0;
   
-  [queue queueAndAwaitBlock:^{ ++val; }];
+  [queue queueAndAwaitBlock:^{ OSAtomicIncrement32(&val); }];
   
   XCTAssertEqual(val, 1);
 }
 
 - (void)testQueueAndAwaitBlockIterationCount {
-  GCDQueue *queue = [GCDQueue new];
-  __block int val = 0;
+  GCDQueue *queue = [[GCDQueue alloc] initConcurrent];
+  __block int32_t val = 0;
   
-  [queue queueAndAwaitBlock:^(size_t i){ ++val; } iterationCount:10];
+  [queue queueAndAwaitBlock:^(size_t i){ OSAtomicIncrement32(&val); } iterationCount:100];
   
-  XCTAssertEqual(val, 10);
+  XCTAssertEqual(val, 100);
 }
 
 - (void)testQueueBlockInGroup {
-  GCDQueue *queue = [GCDQueue new];
+  GCDQueue *queue = [[GCDQueue alloc] initConcurrent];
   GCDGroup *group = [GCDGroup new];
-  __block int val = 0;
+  __block int32_t val = 0;
   
-  [queue queueBlock:^{ ++val; } inGroup:group];
-  [queue queueBlock:^{ ++val; } inGroup:group];
+  for (int i = 0; i < 100; ++i) {
+    [queue queueBlock:^{ OSAtomicIncrement32(&val); } inGroup:group];
+  }
   
-  XCTAssertEqual(val, 0);
   [group wait];
-  XCTAssertEqual(val, 2);
+  XCTAssertEqual(val, 100);
 }
 
 - (void)testQueueNotifyBlockForGroup {
-  GCDQueue *queue = [GCDQueue new];
-  GCDGroup *group = [GCDGroup new];
+  GCDQueue *queue = [[GCDQueue alloc] initConcurrent];
   GCDSemaphore *semaphore = [GCDSemaphore new];
-  __block int val = 0;
+  GCDGroup *group = [GCDGroup new];
+  __block int32_t val = 0;
+  __block int32_t notifyVal = 0;
   
-  [queue queueBlock:^{ val += 1; } inGroup:group];
-  [queue queueBlock:^{ val += 2; } inGroup:group];
-  [queue queueNotifyBlock:^{ [semaphore signal]; } forGroup:group];
-  
+  for (int i = 0; i < 100; ++i) {
+    [queue queueBlock:^{ OSAtomicIncrement32(&val); } inGroup:group];
+  }
+  [queue queueNotifyBlock:^{ notifyVal = val; [semaphore signal]; } inGroup:group];
+
   [semaphore wait];
-  XCTAssertEqual(val, 3);
+  XCTAssertEqual(notifyVal, 100);
 }
 
 - (void)testQueueBarrierBlock {
-  GCDQueue *queue = [GCDQueue new];
-  __block int val = 0;
-  __block int barrierVal = 0;
+  GCDQueue *queue = [[GCDQueue alloc] initConcurrent];
+  GCDSemaphore *semaphore = [GCDSemaphore new];
+  __block int32_t val = 0;
+  __block int32_t barrierVal = 0;
 
-  for (int i = 0; i < 10; ++i) {
-    [queue queueBlock:^{ ++val; }];
+  for (int i = 0; i < 100; ++i) {
+    [queue queueBlock:^{ OSAtomicIncrement32(&val); }];
   }
-  [queue queueBarrierBlock:^{ barrierVal = val; }];
-  for (int i = 0; i < 10; ++i) {
-    [queue queueBlock:^{ ++val; }];
+  [queue queueBarrierBlock:^{ barrierVal = val; [semaphore signal]; }];
+  for (int i = 0; i < 100; ++i) {
+    [queue queueBlock:^{ OSAtomicIncrement32(&val); }];
   }
 
-  [queue queueAndAwaitBlock:^{}];
-  XCTAssertEqual(barrierVal, 10);
-  XCTAssertEqual(val, 20);
+  [semaphore wait];
+  XCTAssertEqual(barrierVal, 100);
 }
 
 - (void)testQueueAndAwaitBarrierBlock {
-  GCDQueue *queue = [GCDQueue new];
-  __block int val = 0;
+  GCDQueue *queue = [[GCDQueue alloc] initConcurrent];
+  __block int32_t val = 0;
   
-  for (int i = 0; i < 10; ++i) {
-    [queue queueBlock:^{ ++val; }];
+  for (int i = 0; i < 100; ++i) {
+    [queue queueBlock:^{ OSAtomicIncrement32(&val); }];
   }
   [queue queueAndAwaitBarrierBlock:^{}];
-  XCTAssertEqual(val, 10);
+  XCTAssertEqual(val, 100);
 }
 
 static int onceVal;
+
 - (void)onceBlock {
   GCDExecOnce(^{ ++onceVal; });
 }
+
 - (void)testExecOnce {
   onceVal = 0;
-  for (int i = 0; i < 10; ++i) {
+  for (int i = 0; i < 100; ++i) {
     [self onceBlock];
   }
   
@@ -154,6 +155,7 @@ static int onceVal;
 + (instancetype)theTestInstance {
   GCDSharedInstance(^{ return [[self class] new]; });
 }
+
 - (void)testSharedInstance {
   XCTAssertTrue([[GCDQueueTests theTestInstance] class] == [self class]);
   XCTAssertEqual([GCDQueueTests theTestInstance], [GCDQueueTests theTestInstance]);
