@@ -19,7 +19,7 @@
 /**
  *  Initializes a new semaphore with starting value 0.
  *
- *  @return The initialized semaphore instance.
+ *  @return The initialized instance.
  *  @see dispatch_semaphore_create()
  */
 - (instancetype)init;
@@ -28,7 +28,7 @@
  *  Initializes a new semaphore.
  *
  *  @param value The starting value for the semaphore.
- *  @return The initialized semaphore instance.
+ *  @return The initialized instance.
  *  @see dispatch_semaphore_create()
  */
 - (instancetype)initWithValue:(long)value;

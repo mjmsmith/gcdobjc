@@ -61,7 +61,7 @@
 /**
  *  Initializes a new serial queue.
  *
- *  @return The initialized serial queue instance.
+ *  @return The initialized instance.
  *  @see dispatch_queue_create()
  */
 - (instancetype)init;
@@ -69,7 +69,7 @@
 /**
  *  Initializes a new serial queue.
  *
- *  @return The initialized serial queue instance.
+ *  @return The initialized instance.
  *  @see dispatch_queue_create()
  */
 - (instancetype)initSerial;
@@ -77,7 +77,7 @@
 /**
  *  Initializes a new concurrent queue.
  *
- *  @return The initialized concurrent queue instance.
+ *  @return The initialized instance.
  *  @see dispatch_queue_create()
  */
 - (instancetype)initConcurrent;

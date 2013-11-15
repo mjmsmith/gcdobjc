@@ -19,7 +19,7 @@
 /**
  *  Initializes a new group.
  *
- *  @return The initialized group instance.
+ *  @return The initialized instance.
  *  @see dispatch_group_create()
  */
 - (instancetype)init;
