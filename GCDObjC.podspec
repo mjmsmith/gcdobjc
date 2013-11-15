@@ -7,8 +7,8 @@ Pod::Spec.new do |s|
                       It has four main aims:
 
                       * Organize the flat C API into appropriate classes.
-                      * Use more convenient arguments, such as NSTimeIntervals.
-                      * Split single functions into multiple intent-revealing methods.
+                      * Use intention-revealing names to distinguish between synchronous and asynchronous functions.
+                      * Use more convenient arguments such as NSTimeIntervals.
                       * Add convenience methods.
                    DESC
   s.homepage     = "https://github.com/mjmsmith/gcdobjc"
