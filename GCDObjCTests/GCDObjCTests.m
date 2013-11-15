@@ -11,10 +11,10 @@
 
 #import "GCDObjC.h"
 
-@interface GCDQueueTests : XCTestCase
+@interface GCDObjCTests : XCTestCase
 @end
 
-@implementation GCDQueueTests
+@implementation GCDObjCTests
 
 - (void)testMainQueue {
   XCTAssertEqual([GCDQueue mainQueue].dispatchQueue, dispatch_get_main_queue());
@@ -157,8 +157,8 @@ static int onceVal;
 }
 
 - (void)testSharedInstance {
-  XCTAssertTrue([[GCDQueueTests theTestInstance] class] == [self class]);
-  XCTAssertEqual([GCDQueueTests theTestInstance], [GCDQueueTests theTestInstance]);
+  XCTAssertTrue([[GCDObjCTests theTestInstance] class] == [self class]);
+  XCTAssertEqual([GCDObjCTests theTestInstance], [GCDObjCTests theTestInstance]);
 }
 
 @end

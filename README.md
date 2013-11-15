@@ -3,8 +3,8 @@
 GCDObjC is an Objective-C wrapper for the most commonly used features of Grand Central Dispatch.  It has four main aims:
 
 * Organize the flat C API into appropriate classes.
-* Use more convenient arguments, such as NSTimeIntervals.
-* Split single functions into multiple intent-revealing methods.
+* Use intention-revealing names to distinguish between synchronous and asynchronous functions. 
+* Use more convenient arguments such as NSTimeIntervals.
 * Add convenience methods.
 
 ## Usage
@@ -13,13 +13,13 @@ __GCDObjC__ requires ARC and iOS 6.0.  (Prior to 6.0, dispatch objects were not 
 
 __GCDObjC.h__ is the only header file that needs to be imported.
 
-For usage examples, see [GCDObjCTests.m](https://github.com/mjmsmith/gcdobjc/blob/master/GCDObjCTests/GCDQueueTests.m).
+For usage examples, see [GCDObjCTests.m](https://github.com/mjmsmith/gcdobjc/blob/master/GCDObjCTests/GCDObjCTests.m).
 
 ## GCDQueue
 
-Most of the functionality is implemented in the __GCDQueue__ class.
+Queues are implemented in the __GCDQueue__ class.
 
-* convenience accessors for the global queues and current queue
+* convenience accessors for global queues
 
 ```
 + (GCDQueue *)mainQueue;
@@ -51,17 +51,17 @@ Most of the functionality is implemented in the __GCDQueue__ class.
 - (void)queueAndAwaitBlock:(void (^)(size_t))block iterationCount:(size_t)count;
 ```
 
-* queueing notify blocks on groups
-
-```
-- (void)queueNotifyBlock:(dispatch_block_t)block forGroup:(GCDGroup *)group;
-```
-
 * queueing barrier blocks for synchronous or asynchronous execution
 
 ```
 - (void)queueBarrierBlock:(dispatch_block_t)block;
 - (void)queueAndAwaitBarrierBlock:(dispatch_block_t)block;
+```
+
+* queueing notify blocks on groups
+
+```
+- (void)queueNotifyBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group;
 ```
 
 * suspending and resuming a queue
@@ -121,7 +121,9 @@ Two macros are provided for wrapping __dispatch_once()__ calls.
 * executing a block only once: __GCDExecOnce(block)__
 
 ```
-GCDExecOnce(^{ NSLog(@"This will only be logged once."); });
+for (int i = 0; i < 10; ++i) {
+    GCDExecOnce(^{ NSLog(@"This will only be logged once."); });
+}
 ```
 
 * creating a singleton instance of a class: __GCDSharedInstance(block)__

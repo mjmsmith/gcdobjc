@@ -11,6 +11,7 @@
 
 /**
  *  Returns the underlying dispatch group object.
+ *
  *  @return The dispatch group object.
  */
 @property (strong, readonly, nonatomic) dispatch_group_t dispatchGroup;
@@ -48,7 +49,7 @@
 /**
  *  Waits forever for the previously submitted blocks in the group to complete.
  *
- *  @see dispatch_group_wait().
+ *  @see dispatch_group_wait()
  */
 - (void)wait;
 
@@ -57,7 +58,7 @@
  *
  *  @param seconds The time to wait in seconds.
  *  @return YES if all blocks completed, NO if the timeout occurred.
- *  @see dispatch_group_wait().
+ *  @see dispatch_group_wait()
  */
 - (BOOL)wait:(double)seconds;
 

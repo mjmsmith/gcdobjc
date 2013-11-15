@@ -13,6 +13,7 @@
 
 /**
  *  Returns the underlying dispatch queue object.
+ *
  *  @return The dispatch queue object.
  */
 @property (strong, readonly, nonatomic) dispatch_queue_t dispatchQueue;
@@ -159,12 +160,14 @@
 
 /**
  *  Suspends execution of blocks on the queue.
+ *
  *  @see dispatch_suspend()
  */
 - (void)suspend;
 
 /**
  *  Resumes execution of blocks on the queue.
+ *
  *  @see dispatch_resume()
  */
 - (void)resume;

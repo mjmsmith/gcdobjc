@@ -11,6 +11,7 @@
 
 /**
  *  Returns the underlying dispatch semaphore object.
+ *
  *  @return The dispatch semaphore object.
  */
 @property (strong, readonly, nonatomic) dispatch_semaphore_t dispatchSemaphore;
