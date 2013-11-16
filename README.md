@@ -4,7 +4,7 @@ GCDObjC is an Objective-C wrapper for the most commonly used features of Grand C
 
 * Organize the flat C API into appropriate classes.
 * Use intention-revealing names to distinguish between synchronous and asynchronous functions. 
-* Use more convenient arguments such as NSTimeIntervals.
+* Use more convenient arguments such as time intervals.
 * Add convenience methods.
 
 ## Usage
