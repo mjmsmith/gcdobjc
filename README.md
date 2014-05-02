@@ -21,7 +21,7 @@ Queues are implemented in the __GCDQueue__ class.
 
 * convenience accessors for global queues
 
-```
+```objc
 + (GCDQueue *)mainQueue;
 + (GCDQueue *)globalQueue;
 + (GCDQueue *)highPriorityGlobalQueue;
@@ -31,14 +31,14 @@ Queues are implemented in the __GCDQueue__ class.
 
 * creating serial and concurrent queues
 
-```
+```objc
 - (instancetype)initSerial;
 - (instancetype)initConcurrent;
 ```
 
 * queueing blocks for asynchronous execution
 
-```
+```objc
 - (void)queueBlock:(dispatch_block_t)block;
 - (void)queueBlock:(dispatch_block_t)block afterDelay:(double)seconds;
 - (void)queueBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group;
@@ -46,27 +46,27 @@ Queues are implemented in the __GCDQueue__ class.
 
 * queueing blocks for synchronous execution
 
-```
+```objc
 - (void)queueAndAwaitBlock:(dispatch_block_t)block;
 - (void)queueAndAwaitBlock:(void (^)(size_t))block iterationCount:(size_t)count;
 ```
 
 * queueing barrier blocks for synchronous or asynchronous execution
 
-```
+```objc
 - (void)queueBarrierBlock:(dispatch_block_t)block;
 - (void)queueAndAwaitBarrierBlock:(dispatch_block_t)block;
 ```
 
 * queueing notify blocks on groups
 
-```
+```objc
 - (void)queueNotifyBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group;
 ```
 
 * suspending and resuming a queue
 
-```
+```objc
 - (void)suspend;
 - (void)resume;
 ```
@@ -77,14 +77,14 @@ Semaphores are implemented in the __GCDSemaphore__ class.
 
 * creating semaphores
 
-```
+```objc
 - (instancetype)init;
 - (instancetype)initWithValue:(long)value;
 ```
 
 * signaling and waiting on a semaphore
 
-```
+```objc
 - (BOOL)signal;
 - (void)wait;
 - (BOOL)wait:(double)seconds;
@@ -96,20 +96,20 @@ Groups are implemented in the __GCDGroup__ class.
 
 * creating groups
 
-```
+```objc
 - (instancetype)init;
 ```
 
 * entering and leaving a group
 
-```
+```objc
 - (void)enter;
 - (void)leave;
 ```
 
 * waiting on completion of a group
 
-```
+```objc
 - (void)wait;
 - (BOOL)wait:(double)seconds;
 ```
@@ -120,7 +120,7 @@ Two macros are provided for wrapping __dispatch_once()__ calls.
 
 * executing a block only once: __GCDExecOnce(block)__
 
-```
+```objc
 for (int i = 0; i < 10; ++i) {
     GCDExecOnce(^{ NSLog(@"This will only be logged once."); });
 }
@@ -128,7 +128,7 @@ for (int i = 0; i < 10; ++i) {
 
 * creating a singleton instance of a class: __GCDSharedInstance(block)__
 
-```
+```objc
 + (instancetype)sharedInstance {
   GCDSharedInstance(^{ return [[self class] new]; });
 }
