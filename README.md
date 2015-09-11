@@ -7,7 +7,7 @@ GCDObjC is an Objective-C wrapper for the most commonly used features of Grand C
 * Use more convenient arguments such as time intervals.
 * Add convenience methods.
 
-**[ 06/02/14: A Swift port is at [GCDSwift](https://github.com/mjmsmith/gcdswift). ]**
+**A Swift port is at [GCDSwift](https://github.com/mjmsmith/gcdswift).**
 
 ## Usage
 
@@ -16,6 +16,12 @@ __GCDObjC__ requires ARC and iOS 6.0.  (Prior to 6.0, dispatch objects were not 
 __GCDObjC.h__ is the only header file that needs to be imported.
 
 For usage examples, see [GCDObjCTests.m](https://github.com/mjmsmith/gcdobjc/blob/master/GCDObjCTests/GCDObjCTests.m).
+
+Install via CocoaPods:
+
+```ruby
+pod "GCDObjC"
+```
 
 ## GCDQueue
 
