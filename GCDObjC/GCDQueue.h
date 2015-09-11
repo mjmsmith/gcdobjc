@@ -137,7 +137,7 @@
  *  Schedules a block to be submitted to the queue when a group of previously submitted blocks have completed.
  *
  *  @param block The block to submit when the group completes.
- *  @param forGroup The group to observe.
+ *  @param inGroup The group to observe.
  *  @see dispatch_group_notify()
  */
 - (void)queueNotifyBlock:(dispatch_block_t)block inGroup:(GCDGroup *)group;
