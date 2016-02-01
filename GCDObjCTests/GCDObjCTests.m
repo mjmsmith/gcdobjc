@@ -153,7 +153,7 @@ static int onceVal;
 }
 
 + (instancetype)theTestInstance {
-  GCDSharedInstance(^{ return [[self class] new]; });
+  GCDSharedInstance(^{ return [self new]; });
 }
 
 - (void)testSharedInstance {

@@ -138,7 +138,7 @@ for (int i = 0; i < 10; ++i) {
 
 ```objc
 + (instancetype)sharedInstance {
-  GCDSharedInstance(^{ return [[self class] new]; });
+  GCDSharedInstance(^{ return [self new]; });
 }
 ```
 
