@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "GCDObjC"
-  s.version      = "0.2.0"
+  s.version      = "0.3.0"
   s.summary      = "Objective-C wrapper for Grand Central Dispatch."
   s.description  = <<-DESC
                       GCDObjC is an Objective-C wrapper for the most commonly used features of Grand Central Dispatch.
