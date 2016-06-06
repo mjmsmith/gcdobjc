@@ -59,6 +59,13 @@
 + (GCDQueue *)backgroundPriorityGlobalQueue;
 
 /**
+ *  Returns whether the current block is executing on the main queue.
+ *
+ *  @return YES if so, NO othewise.
+ */
++ (BOOL)isMainQueue;
+
+/**
  *  Initializes a new serial queue.
  *
  *  @return The initialized instance.
@@ -171,5 +178,19 @@
  *  @see dispatch_resume()
  */
 - (void)resume;
+
+/**
+ *  Returns the context associated with a key.
+ *
+ *  @see dispatch_get_specific()
+ */
+- (void *)contextForKey:(const void *)key;
+
+/**
+ *  Sets the context associated with a key.
+ *
+ *  @see dispatch_queue_set_specific()
+ */
+- (void)setContext:(void *)context forKey:(const void *)key;
 
 @end

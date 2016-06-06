@@ -18,6 +18,9 @@
 
 - (void)testMainQueue {
   XCTAssertEqual([GCDQueue mainQueue].dispatchQueue, dispatch_get_main_queue());
+
+  XCTAssertTrue([GCDQueue isMainQueue]);
+  [[GCDQueue new] queueAndAwaitBlock:^{ XCTAssertFalse([GCDQueue isMainQueue]); }];
 }
 
 - (void)testGlobalQueues {

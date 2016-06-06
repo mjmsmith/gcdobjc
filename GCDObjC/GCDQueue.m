@@ -14,6 +14,8 @@ static GCDQueue *highPriorityGlobalQueue;
 static GCDQueue *lowPriorityGlobalQueue;
 static GCDQueue *backgroundPriorityGlobalQueue;
 
+static uint8_t mainQueueMarker[] = {0};
+
 @interface GCDQueue ()
 @property (strong, readwrite, nonatomic) dispatch_queue_t dispatchQueue;
 @end
@@ -42,6 +44,10 @@ static GCDQueue *backgroundPriorityGlobalQueue;
   return backgroundPriorityGlobalQueue;
 }
 
++ (BOOL)isMainQueue {
+  return dispatch_get_specific(mainQueueMarker) == mainQueueMarker;
+}
+
 #pragma mark Lifecycle.
 
 + (void)initialize {
@@ -51,6 +57,8 @@ static GCDQueue *backgroundPriorityGlobalQueue;
     highPriorityGlobalQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
     lowPriorityGlobalQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0)];
     backgroundPriorityGlobalQueue = [[GCDQueue alloc] initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)];
+    
+    [mainQueue setContext:mainQueueMarker forKey:mainQueueMarker];
   }
 }
 
@@ -74,7 +82,7 @@ static GCDQueue *backgroundPriorityGlobalQueue;
   return self;
 }
 
-#pragma mark Public block methods.
+#pragma mark Public methods.
 
 - (void)queueBlock:(dispatch_block_t)block {
   dispatch_async(self.dispatchQueue, block);
@@ -108,14 +116,20 @@ static GCDQueue *backgroundPriorityGlobalQueue;
   dispatch_barrier_sync(self.dispatchQueue, block);
 }
 
-#pragma mark Misc public methods.
-
 - (void)suspend {
   dispatch_suspend(self.dispatchQueue);
 }
 
 - (void)resume {
   dispatch_resume(self.dispatchQueue);
+}
+
+- (void *)contextForKey:(const void *)key {
+  return dispatch_get_specific(key);
+}
+
+- (void)setContext:(void *)context forKey:(const void *)key {
+  dispatch_queue_set_specific(self.dispatchQueue, key, context, NULL);
 }
 
 @end

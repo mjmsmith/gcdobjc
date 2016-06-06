@@ -37,6 +37,12 @@ Queues are implemented in the __GCDQueue__ class.
 + (GCDQueue *)backgroundPriorityGlobalQueue;
 ```
 
+* testing the current execution context
+
+```objc
++ (BOOL)isMainQueue;
+```
+
 * creating serial and concurrent queues
 
 ```objc
@@ -77,6 +83,13 @@ Queues are implemented in the __GCDQueue__ class.
 ```objc
 - (void)suspend;
 - (void)resume;
+```
+
+* associating context data with a key
+
+```objc
+- (void *)contextForKey:(const void *)key;
+- (void)setContext:(void *)context forKey:(const void *)key;
 ```
 
 ## GCDSemaphore
