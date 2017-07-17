@@ -7,6 +7,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class GCDQueue;
+
 @interface GCDGroup : NSObject
 
 /**
@@ -61,5 +63,12 @@
  *  @see dispatch_group_wait()
  */
 - (BOOL)wait:(double)seconds;
+
+/**
+ * Schedule a block to be submitted to a queue when all the blocks associated
+ * with a group have completed
+ * @see dispatch_group_notify()
+ */
+- (void)notifyOnQueue:(GCDQueue *)queue work:(dispatch_block_t)block;
 
 @end
