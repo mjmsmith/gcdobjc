@@ -6,6 +6,7 @@
 //
 
 #import "GCDGroup.h"
+#import "GCDQueue.h"
 
 @interface GCDGroup ()
 @property (strong, readwrite, nonatomic) dispatch_group_t dispatchGroup;
@@ -43,6 +44,10 @@
 
 - (BOOL)wait:(double)seconds {
   return dispatch_group_wait(self.dispatchGroup, dispatch_time(DISPATCH_TIME_NOW, (seconds * NSEC_PER_SEC))) == 0;
+}
+
+- (void)notifyOnQueue:(GCDQueue *)queue work:(dispatch_block_t)block {
+    dispatch_group_notify(self.dispatchGroup, [queue dispatchQueue], block);
 }
 
 @end
